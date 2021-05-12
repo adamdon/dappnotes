@@ -4,7 +4,7 @@ import history from "connect-history-api-fallback";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 // import {router} from "./controllers/router.js";
-// import {database} from "./controllers/database.js";
+import {database} from "./database.js";
 
 
 
@@ -16,7 +16,7 @@ livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadSe
 
 
 // //Connecting to database using process.env.MONGO_URI environment variables
-// await database.connect();
+await database.connect();
 
 
 //Set request handles
