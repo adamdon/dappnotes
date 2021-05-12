@@ -3,7 +3,7 @@ export default
     name: "ContainerContentRow",
 
     template: `
-    <div class="row no-gutters">  <!-- row start -->
+    <div class="row no-gutters g-0">  <!-- row start -->
 
                 <slot></slot>
 

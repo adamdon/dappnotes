@@ -38,11 +38,11 @@ export default
     
     
     <div>
-      <a class="nav-link dropdown-toggle btn btn-primary" href="" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a class="nav-link dropdown-toggle btn btn-primary" href="" id="navbarDropdownMenuLink" role="button" data-bs-popper="none" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img src="/images/menu.svg"  width="30" height="30" class="rounded-circle " alt="icon"> Menu
       </a>
 
-      <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdownMenuLink">
+      <div class="dropdown-menu dropdown-menu-dark  dropdown-menu-end animate slideIn" aria-labelledby="navbarDropdownMenuLink">
         <router-link to="/" class="dropdown-item text-center"> Home Link </router-link>
         <router-link to="/two" class="dropdown-item text-center"> Link 2</router-link>
         <router-link to="/three" class="dropdown-item text-center"> Link 3 </router-link>

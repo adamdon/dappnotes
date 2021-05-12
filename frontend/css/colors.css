@@ -147,6 +147,12 @@ a.text-primary:hover, a.text-primary:focus {
 
 
 
+.btn:focus{
+    background-color: #2f4463;
+    border-color: #000000;
+    color: #FFFFFF;
+    box-shadow: none;
+}
 
 
 .bg-secondary
