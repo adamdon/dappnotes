@@ -1,0 +1,23 @@
+{
+  "name": "dappnotes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/server.js",
+  "scripts": {
+    "server": "nodemon --experimental-modules backend/server --ignore frontend"
+  },
+  "author": "Adam Don",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "connect-history-api-fallback": "^1.6.0",
+    "connect-livereload": "^0.6.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "livereload": "^0.9.1",
+    "mongodb": "^3.6.3",
+    "mongoose": "^5.11.15",
+    "nodemon": "^2.0.6",
+    "validator": "^13.5.2"
+  }
+}
