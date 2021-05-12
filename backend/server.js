@@ -4,7 +4,7 @@ import history from "connect-history-api-fallback";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 import {router} from "./routes/router.js";
-import {database} from "./database.js";
+import {database} from "./controllers/database.js";
 
 
 

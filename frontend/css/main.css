@@ -1,0 +1,104 @@
+@charset "utf-8";
+
+body
+{
+    font-family: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #182931;
+    height: 100%;
+}
+
+
+.layout-container-fluid
+{
+    /*background-color: #FFFFFF;*/
+    max-width: 1200px;
+    padding: 5px 5px 5px 5px;
+}
+
+
+.content-container-fluid
+{
+    margin: 5px 5px 5px 5px;
+}
+
+
+.form-control:focus
+{
+    border-color: #000000;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgb(0, 0, 0);
+}
+
+
+.simplebar-scrollbar::before {
+    background-color: #ffffff;
+}
+
+
+
+
+.animate
+{
+    animation-duration: 0.3s;
+    -webkit-animation-duration: 0.3s;
+    animation-fill-mode: both;
+    -webkit-animation-fill-mode: both;
+}
+
+@keyframes slideIn
+{
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+    100% {
+        transform:translateY(0rem);
+        opacity: 1;
+    }
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes slideIn
+{
+    0% {
+        -webkit-transform: transform;
+        -webkit-opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        -webkit-opacity: 1;
+    }
+    0% {
+        -webkit-transform: translateY(1rem);
+        -webkit-opacity: 0;
+    }
+}
+
+.slideIn
+{
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+}
+
+
+.scale-slide-enter-active,
+.scale-slide-leave-active
+{
+    position: absolute;
+    transition: all 0.85s ease;
+}
+
+
+
+
+
+
+.borderless tr, .borderless td, .borderless th
+{
+    border: none !important;
+}
