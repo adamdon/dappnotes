@@ -12,12 +12,21 @@ export default {
 
 
     methods: {
-        async method(event)
+        setupFilePond()
         {
+            console.log("setupFilePond");
+            window.FilePond.registerPlugin(FilePondPluginFileEncode, FilePondPluginImagePreview, FilePondPluginImagePreview);
+            window.FilePond.parse(document.body);
+
 
         },
 
 
+    },
+
+    mounted()
+    {
+         this.setupFilePond();
     },
 
 
@@ -32,6 +41,9 @@ export default {
     <p class="card-text">
         text
     </p>
+    
+    <label class="form-label" for="customFile">Default file input example</label>
+    <input type="file" class="form-control filepond" id="customFile" />
     
   </div>
 </div>
