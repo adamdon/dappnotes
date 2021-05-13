@@ -11,19 +11,19 @@ export default async function (request, response)
         let dataUri = request.body.dataUri;
 
 
-
-
         if((typeof dataUri == "undefined"))
         {
             return response.status(400).json({errors: [{message: "Missing data"}] });
         }
-
 
         // Validate input
         if (validator.isEmpty(dataUri))
         {
             return response.status(400).json({errors: [{message: "dataUri is required"}] });
         }
+
+        let newNote = new Note({dataUri: dataUri,});
+        await newNote.save();
 
         return response.status(200).json(dataUri);
     }
