@@ -1,6 +1,7 @@
 import express from "express";
 
 import testRoute from "./api/testRoute.js"
+import uploadNote from "./api/uploadNote.js"
 
 
 
@@ -8,6 +9,7 @@ import testRoute from "./api/testRoute.js"
 
 export let router = express.Router();
 router.all("/api/testRoute", testRoute);
+router.all("/api/uploadNote", uploadNote);
 
 
 

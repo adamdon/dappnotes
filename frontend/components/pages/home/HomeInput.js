@@ -15,7 +15,12 @@ export default {
         setupFilePond()
         {
             console.log("setupFilePond");
+
             window.FilePond.registerPlugin(FilePondPluginFileEncode, FilePondPluginImagePreview, FilePondPluginImagePreview);
+            window.FilePond.setOptions(
+                {
+                    credits: false,
+                });
             window.FilePond.parse(document.body);
 
 

@@ -3,6 +3,7 @@ import express from "express";
 import history from "connect-history-api-fallback";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
+import errorHandler from "./middleware/errorHandler.js";
 import {router} from "./routes/router.js";
 import {database} from "./controllers/database.js";
 
@@ -24,6 +25,7 @@ let expressApp = express();
 
 expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
 expressApp.use(express.json());
+expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());
 expressApp.use(express.static("frontend"));
