@@ -1,5 +1,6 @@
 import dotenv from "dotenv/config";
 import express from "express";
+import morgan from "morgan";
 import history from "connect-history-api-fallback";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
@@ -20,10 +21,17 @@ livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadSe
 await database.connect();
 
 
+//morgan logging config
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+let morganFormat = "[express] :method :url - :body";
+let morganConfig = {skip: function (req, res) { return req.method  !== "POST" }};
+
+
 //Set request handles
 let expressApp = express();
 
 expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
+expressApp.use(morgan(morganFormat, morganConfig));
 expressApp.use(express.json());
 expressApp.use(errorHandler);
 expressApp.use("/", router);

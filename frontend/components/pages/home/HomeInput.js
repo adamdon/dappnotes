@@ -4,7 +4,8 @@ export default {
     data()
     {
         return {
-            formDisabled: false
+            formDisabled: false,
+            selectedFile: null,
         };
     },
 
@@ -20,10 +21,16 @@ export default {
             window.FilePond.setOptions(
                 {
                     credits: false,
+                    server: 'http://localhost/api/uploadNote'
                 });
             window.FilePond.parse(document.body);
 
 
+        },
+
+        onFileChange(event)
+        {
+            console.log(event);
         },
 
 
@@ -47,10 +54,12 @@ export default {
         text
     </p>
     
-    <label class="form-label" for="customFile">Default file input example</label>
-    <input type="file" class="form-control filepond" id="customFile" />
+    <label class="form-label" for="customFile">Text Label</label>
+    <input @change="onFileChange" class="form-control filepond" type="file" id="customFile" />
     
   </div>
 </div>
-    `,
+
+`,
+
 };

@@ -2,7 +2,7 @@ import validator from 'validator';
 import mongoose from "mongoose";
 
 import {Note} from "../../models/Note.js";
-import {verifyObjectId} from "../../helpers/verifyObjectId.js";
+// import {verifyObjectId} from "../../helpers/verifyObjectId.js";
 
 
 export default async function (request, response)

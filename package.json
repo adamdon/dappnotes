@@ -17,6 +17,7 @@
     "livereload": "^0.9.1",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.15",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.6",
     "validator": "^13.5.2"
   }
