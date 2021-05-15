@@ -5,8 +5,9 @@ export default {
     {
         return {
             formDisabled: false,
-            selectedFile: null,
-            dataUri: "null",
+            blockchainMode: false,
+
+            currentNote: null,
         };
     },
 
@@ -25,46 +26,54 @@ export default {
 
             let inputElement = document.querySelector('input[type="file"]');
             let filePondInstance = FilePond.create(inputElement);
-            filePondInstance.onpreparefile = function (file){window.dataUri = file.getFileEncodeDataURL()};
-
+            filePondInstance.onpreparefile = function (file){window.file = file};
         },
 
-        async uploadNote()
+        async createNote()
         {
-            if(window.dataUri)
+            this.formDisabled = true;
+
+            if(this.blockchainMode === true)
             {
-                this.dataUri = window.dataUri;
-                this.formDisabled = true;
-
-                let requestBody = {dataUri: this.dataUri,};
-                let requestUrl = "/api/uploadNote";
-                let requestHeaders = {"Content-Type": "application/json"};
-
-                const response = await fetch(requestUrl, {method: "POST", headers: requestHeaders, body: JSON.stringify(requestBody)});
-                const data = await response.json();
-
-                if(data.errors)
-                {
-                    console.log(data.errors[0].message);
-                }
-                else if(data.message)
-                {
-                    console.log(data);
-                    this.dataUri = data.message;
-
-                }
-                else
-                {
-                    console.log("Unexpected response");
-                    console.log(data);
-                }
+                //TODO add blockchainMode logic
             }
             else
             {
-                this.dataUri = "upload data first";
-            }
-            this.formDisabled = false;
+                if(window.file)
+                {
+                    let dataUri = window.file.getFileEncodeDataURL();
+                    let name = window.file.filenameWithoutExtension;
 
+                    this.currentNote = {name: name, dataUri: dataUri};
+                    await this.databaseUploadNote(this.currentNote);
+                }
+            }
+
+            this.formDisabled = false;
+        },
+
+        async databaseUploadNote(note)
+        {
+            let requestBody = {note: note,};
+            let requestUrl = "/api/uploadNote";
+            let requestHeaders = {"Content-Type": "application/json"};
+
+            const response = await fetch(requestUrl, {method: "POST", headers: requestHeaders, body: JSON.stringify(requestBody)});
+            const data = await response.json();
+
+            if(data.errors)
+            {
+                console.log(data.errors[0].message);
+            }
+            else if(data.message)
+            {
+                console.log(data); //TODO toast
+            }
+            else
+            {
+                console.log("Unexpected response");
+                console.log(data);
+            }
         },
 
 
@@ -95,12 +104,12 @@ export default {
  
     
     <div class="form-group">
-        <button v-on:click="uploadNote" :disabled="formDisabled" type="button" onclick="" class="btn btn-dark w-100">Upload</button>
+        <button v-on:click="createNote" :disabled="formDisabled" type="button" onclick="" class="btn btn-dark w-100">Upload</button>
     </div> <!-- form-group// -->
  
  
      <p class="card-text">
-        {{dataUri}}
+        {{currentNote}}
     </p>
     
   </div>
