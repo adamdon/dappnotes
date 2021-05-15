@@ -13,6 +13,15 @@ export default function (error, request, response, next)
     }
     else
     {
-        next();
+        if(error.type === "entity.too.large")
+        {
+            return response.status(500).json({errors: [{message: "Max file size is 20KB"}]});
+        }
+        else
+        {
+            console.log(error);
+            next();
+        }
+
     }
 }

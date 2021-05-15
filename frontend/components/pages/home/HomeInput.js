@@ -16,9 +16,7 @@ export default {
     methods: {
         setupFilePond()
         {
-            console.log("setupFilePond");
-
-            window.FilePond.registerPlugin(FilePondPluginFileEncode, FilePondPluginImagePreview, FilePondPluginImagePreview);
+            window.FilePond.registerPlugin(FilePondPluginFileEncode, FilePondPluginImagePreview, FilePondPluginImageResize);
             window.FilePond.setOptions(
                 {
                     credits: false,
@@ -33,8 +31,6 @@ export default {
 
         async uploadNote()
         {
-            console.log("uploadNote");
-
             if(window.dataUri)
             {
                 this.dataUri = window.dataUri;
@@ -43,7 +39,6 @@ export default {
                 let requestBody = {dataUri: this.dataUri,};
                 let requestUrl = "/api/uploadNote";
                 let requestHeaders = {"Content-Type": "application/json"};
-                console.log(requestBody);
 
                 const response = await fetch(requestUrl, {method: "POST", headers: requestHeaders, body: JSON.stringify(requestBody)});
                 const data = await response.json();
@@ -54,7 +49,7 @@ export default {
                 }
                 else if(data.message)
                 {
-                    console.log("Worked response");
+                    console.log(data);
                     this.dataUri = data.message;
 
                 }

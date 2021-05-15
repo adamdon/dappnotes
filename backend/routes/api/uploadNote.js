@@ -25,7 +25,7 @@ export default async function (request, response)
         let newNote = new Note({dataUri: dataUri,});
         await newNote.save();
 
-        return response.status(200).json({message: "Data uploaded"});
+        return response.status(200).json({message: "Data uploaded", note: newNote});
     }
     catch (error)
     {

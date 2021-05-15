@@ -32,7 +32,7 @@ let expressApp = express();
 
 expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
 expressApp.use(morgan(morganFormat, morganConfig));
-expressApp.use(express.json());
+expressApp.use(express.json({ limit: '21KB' }));
 expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());
