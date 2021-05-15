@@ -7,7 +7,7 @@ export default {
             formDisabled: false,
             blockchainMode: false,
 
-            currentNote: null,
+            currentNote: {_id: ""},
         };
     },
 
@@ -64,9 +64,11 @@ export default {
             if(data.errors)
             {
                 console.log(data.errors[0].message);
+
             }
             else if(data.message)
             {
+                this.currentNote = data.note;
                 console.log(data); //TODO toast
             }
             else
@@ -109,7 +111,7 @@ export default {
  
  
      <p class="card-text">
-        {{currentNote}}
+        {{currentNote._id}}
     </p>
     
   </div>
