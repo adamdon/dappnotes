@@ -12,7 +12,17 @@ export default
 
     async mounted()
     {
+        console.log("toast test");
+        let toastElList = [].slice.call(document.querySelectorAll('.toast'))
+        let toastList = toastElList.map(function(toastEl)
+        {
+            // Creates an array of toasts (it only initializes them)
+            return new bootstrap.Toast(toastEl) // No need for options; use the default options
+        });
 
+        toastList.forEach(toast => toast.show()); // This show them
+
+        console.log(toastList); // Testing to see if it works
     },
 
 
@@ -30,6 +40,74 @@ export default
 
 
     template: `
+
+<div aria-live="polite" aria-atomic="true" class="position-relative ">
+  <div class="toast-container align-center position-absolute top-0 start-50 translate-middle-x p-0" >
+
+
+    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+
+    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    
+    
+    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>    
+<!--    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--      <div class="toast-header">-->
+<!--        <img src="" class="rounded me-2" alt="...">-->
+<!--        <strong class="me-auto">Bootstrap</strong>-->
+<!--        <small class="text-muted">2 seconds ago</small>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--      </div>-->
+<!--      <div class="toast-body">-->
+<!--        Heads up, toasts will stack automatically-->
+<!--      </div>-->
+<!--    </div>-->
+    
+    
+  </div>
+</div>
+
+
+
       
 <nav class="navbar navbar-dark bg-primary p-0">
     <router-link class="navbar-brand" to="/">
