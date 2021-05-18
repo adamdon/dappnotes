@@ -34,6 +34,28 @@ export default
 
         },
 
+        async toastMessage(text)
+        {
+
+        },
+
+        async toastSuccess(text)
+        {
+
+        },
+
+        async toastError(text)
+        {
+
+        },
+
+        async addToast(text, type)
+        {
+
+        }
+
+
+
 
 
     },
@@ -42,13 +64,13 @@ export default
     template: `
 
 <div aria-live="polite" aria-atomic="true" class="position-relative ">
-  <div class="toast-container align-center position-absolute top-0 start-50 translate-middle-x p-0" >
+  <div class="toast-container align-center  position-fixed top-0 start-50 translate-middle-x p-0" >
 
 
     <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
-                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+                Hello, world! 
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -66,7 +88,7 @@ export default
     <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
-                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+                Hello, world! This is a toast message. This is a toast message.
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -85,7 +107,7 @@ export default
     <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
-                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
+                Hello, world! This is a toast message.  This is a toast message.
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
