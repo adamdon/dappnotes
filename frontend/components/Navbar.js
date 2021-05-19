@@ -12,17 +12,9 @@ export default
 
     async mounted()
     {
-        console.log("toast test");
-        let toastElList = [].slice.call(document.querySelectorAll('.toast'))
-        let toastList = toastElList.map(function(toastEl)
-        {
-            // Creates an array of toasts (it only initializes them)
-            return new bootstrap.Toast(toastEl) // No need for options; use the default options
-        });
-
-        toastList.forEach(toast => toast.show()); // This show them
-
-        console.log(toastList); // Testing to see if it works
+        this.emitter.on("toastMessage", (text) => this.toastMessage(text));
+        this.emitter.on("toastSuccess", (text) => this.toastSuccess(text));
+        this.emitter.on("toastError", (text) => this.toastError(text));
     },
 
 
@@ -36,22 +28,68 @@ export default
 
         async toastMessage(text)
         {
-
+            console.log("toastMessage: " + text);
+            await this.addToast(text, "bg-dark");
         },
 
         async toastSuccess(text)
         {
-
+            console.log("toastSuccess: " + text);
+            await this.addToast(text, "bg-success");
         },
 
         async toastError(text)
         {
-
+            console.log("toastError: " + text);
+            await this.addToast(text, "bg-danger");
         },
 
-        async addToast(text, type)
+        async addToast(text, color)
         {
+            let toastContainer = document.getElementById("toastContainer");
 
+            let toastDiv = document.createElement("div");
+            // newDiv.className = "toast shadow-lg align-items-center text-white bg-dark border-0 w-100"
+            toastDiv.setAttribute("class", "toast shadow-lg align-items-center text-white border-0 w-100");
+            toastDiv.classList.add(color)
+            toastDiv.setAttribute("role", "alert");
+            toastDiv.setAttribute("aria-live", "assertive");
+            toastDiv.setAttribute("aria-atomic", "true");
+
+
+            let dFlexDiv = document.createElement("div");
+            dFlexDiv.setAttribute("class", "d-flex");
+
+
+            let toastBodyDiv = document.createElement("div");
+            toastBodyDiv.setAttribute("class", "toast-body");
+
+
+            let toastBodyTextNode = document.createTextNode(text);
+
+
+            let closeButton = document.createElement("button");
+            closeButton.setAttribute("class", "btn-close btn-close-white me-2 m-auto");
+            closeButton.setAttribute("data-bs-dismiss", "toast");
+            closeButton.setAttribute("aria-label", "Close");
+
+
+            toastBodyDiv.appendChild(toastBodyTextNode);
+            dFlexDiv.appendChild(toastBodyDiv);
+            dFlexDiv.appendChild(closeButton);
+            toastDiv.appendChild(dFlexDiv);
+            toastContainer.appendChild(toastDiv);
+
+
+            let toastOptions =
+                {
+                    animation: true,
+                    autohide: true,
+                    delay: 10000,
+
+                };
+            let bootstrapToast = new bootstrap.Toast(toastDiv, toastOptions);
+            bootstrapToast.show();
         }
 
 
@@ -64,65 +102,55 @@ export default
     template: `
 
 <div aria-live="polite" aria-atomic="true" class="position-relative ">
-  <div class="toast-container align-center  position-fixed top-0 start-50 translate-middle-x p-0" >
+  <div class="toast-container align-center  position-fixed top-0 start-50 translate-middle-x p-0" id="toastContainer" >
 
 
-    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Hello, world! 
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-
-    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-
-    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Hello, world! This is a toast message. This is a toast message.
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-
-    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-    
-    
-    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                Hello, world! This is a toast message.  This is a toast message.
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>    
-<!--    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">-->
-<!--      <div class="toast-header">-->
-<!--        <img src="" class="rounded me-2" alt="...">-->
-<!--        <strong class="me-auto">Bootstrap</strong>-->
-<!--        <small class="text-muted">2 seconds ago</small>-->
-<!--        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>-->
-<!--      </div>-->
-<!--      <div class="toast-body">-->
-<!--        Heads up, toasts will stack automatically-->
-<!--      </div>-->
+<!--    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--        <div class="d-flex">-->
+<!--            <div class="toast-body">-->
+<!--                Hello, world! -->
+<!--            </div>-->
+<!--            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--        </div>-->
 <!--    </div>-->
+
+<!--    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--        <div class="d-flex">-->
+<!--            <div class="toast-body">-->
+<!--                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.-->
+<!--            </div>-->
+<!--            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--        <div class="d-flex">-->
+<!--            <div class="toast-body">-->
+<!--                Hello, world! This is a toast message. This is a toast message.-->
+<!--            </div>-->
+<!--            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--        <div class="d-flex">-->
+<!--            <div class="toast-body">-->
+<!--                Hello, world! This is a toast message. This is a toast message. This is a toast message. This is a toast message. This is a toast message.-->
+<!--            </div>-->
+<!--            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    -->
+<!--    -->
+<!--    <div class="toast shadow-lg align-items-center text-white bg-dark border-0 w-100" role="alert" aria-live="assertive" aria-atomic="true">-->
+<!--        <div class="d-flex">-->
+<!--            <div class="toast-body">-->
+<!--                Hello, world! This is a toast message.  This is a toast message.-->
+<!--            </div>-->
+<!--            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>-->
+<!--        </div>-->
+<!--    </div>    -->
+
     
     
   </div>

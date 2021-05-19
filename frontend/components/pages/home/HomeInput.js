@@ -63,26 +63,20 @@ export default {
 
             if(data.errors)
             {
-                console.log(data.errors[0].message);
-
+                this.emitter.emit("toastError", data.errors[0].message);
             }
             else if(data.message)
             {
                 this.currentNote = data.note;
-                console.log(data); //TODO toast
+                this.emitter.emit("toastSuccess", data.message);
+                this.emitter.emit("toastMessage", ("ID: " + data.note._id));
             }
             else
             {
-                console.log("Unexpected response");
+                this.emitter.emit("toastError", "Unexpected response");
                 console.log(data);
             }
         },
-
-
-        // onFileChange(event)
-        // {
-        //     console.log(event);
-        // },
 
 
     },
