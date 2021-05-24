@@ -77,6 +77,8 @@ export default {
         {{noteDataUriOutput}}
     </p>
     
+    <img :src="noteDataUriOutput">
+    
   </div>
 </div>
     `,
