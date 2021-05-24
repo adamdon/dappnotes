@@ -6,6 +6,7 @@ export default {
         return {
             formDisabled: false,
             noteIdInput: "",
+            noteDataUriOutput: "",
         };
     },
 
@@ -20,9 +21,35 @@ export default {
 
         async downloadNote()
         {
-            this.emitter.emit("toastMessage", ("Downloading note: " + this.noteIdInput));
+            await this.databaseDownloadNote(this.noteIdInput);
 
         },
+
+        async databaseDownloadNote(id)
+        {
+            let requestBody = {_id: id,};
+            let requestUrl = "/api/downloadNote";
+            let requestHeaders = {"Content-Type": "application/json"};
+
+            const response = await fetch(requestUrl, {method: "POST", headers: requestHeaders, body: JSON.stringify(requestBody)});
+            const data = await response.json();
+
+            if(data.errors)
+            {
+                this.emitter.emit("toastError", data.errors[0].message);
+            }
+            else if(data)
+            {
+                this.noteDataUriOutput = data.dataUri;
+                this.emitter.emit("toastSuccess", "Downloaded file: " + data.name);
+            }
+            else
+            {
+                this.emitter.emit("toastError", "Unexpected response");
+                console.log(data);
+            }
+
+        }
 
 
     },
@@ -36,17 +63,19 @@ export default {
   
   <div class="card-body">
  
-    <p class="card-text">
-        text
-    </p>
+
     
-    <form @submit.prevent="onSubmit">
+    <form v-on:submit.prevent="downloadNote">
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default"><i class="fas fa-at"></i></span>
-            <input v-model="noteIdInput" v-on:keyup.enter="downloadNote" :disabled="this.formDisabled" placeholder="Note ID" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input v-model="noteIdInput" :disabled="this.formDisabled" placeholder="Note ID" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
               <button v-on:click="downloadNote" class="btn btn-dark" type="button" id="button-addon2">Download</button>
         </div>
     </form>
+    
+    <p class="card-text">
+        {{noteDataUriOutput}}
+    </p>
     
   </div>
 </div>
