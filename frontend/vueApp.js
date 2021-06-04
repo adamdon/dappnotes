@@ -1,3 +1,4 @@
+import store from "/store.js";
 import Navbar from "/components/Navbar.js";
 import HomePage from "/components/pages/home/HomePage.js";
 import NotFoundPage from "/components/NotFoundPage.js";
@@ -40,8 +41,10 @@ const router = window.VueRouter.createRouter({history: VueRouter.createWebHistor
 
 
 
+
 const app = Vue.createApp({render: () => Vue.h(rootComponent)});
-app.use(router)
+app.use(router);
+app.use(store);
 app.config.devtools = true;
 app.config.globalProperties.emitter = window.mitt();
 app.mount("#vueApp");
