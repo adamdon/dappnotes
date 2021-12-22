@@ -4,12 +4,15 @@
   "description": "",
   "main": "backend/server.js",
   "scripts": {
-    "server": "nodemon --experimental-modules backend/server --ignore frontend"
+    "dev": "concurrently \"npm run server\" \"cd react && npm run clientStartMac\" ",
+    "server": "nodemon --quiet --experimental-modules backend/server --ignore react/build/",
+    "start": "cd react && npm run build && cd .. && npm run server"
   },
   "author": "Adam Don",
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "concurrently": "^6.5.1",
     "connect-history-api-fallback": "^1.6.0",
     "connect-livereload": "^0.6.1",
     "dotenv": "^8.2.0",

@@ -13,7 +13,7 @@ import {database} from "./controllers/database.js";
 //Sets up livereload so changes to html will auto refresh browser without plugins
 let livereloadServer = livereload.createServer({extraExts : ["vue"]});
 
-livereloadServer.watch("frontend");
+livereloadServer.watch("react/build/");
 livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
 
 
@@ -36,7 +36,7 @@ expressApp.use(express.json({ limit: '21KB' }));
 expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());
-expressApp.use(express.static("frontend"));
+expressApp.use(express.static("react/build/"));
 
 
 //start server
