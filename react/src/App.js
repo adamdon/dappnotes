@@ -4,7 +4,7 @@ import 'bootstrap';
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'font-awesome/css/font-awesome.min.css';
-import 'simplebar/dist/simplebar.min.css';
+// import 'simplebar/dist/simplebar.min.css';
 import "./styles/colors.css";
 import "./styles/main.css";
 

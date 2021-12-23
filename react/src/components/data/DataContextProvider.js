@@ -23,7 +23,7 @@ export default function DataContextProvider({children})
             toastError: "",
             showSpinner: false,
             config: {
-                baseUrl: process.env.REACT_APP_API_URL, //REACT_APP_API_URL must be set or .env URL will be used
+                // baseUrl: process.env.REACT_APP_API_URL, //REACT_APP_API_URL must be set or .env URL will be used
             },
 
         }

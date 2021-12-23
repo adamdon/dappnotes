@@ -36,7 +36,8 @@ expressApp.use(express.json({ limit: '21KB' }));
 expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());
-expressApp.use(express.static("react/build/"));
+// expressApp.use(express.static("react/build/"));
+expressApp.use(express.static("./dist"));
 
 
 //start server
