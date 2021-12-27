@@ -4,6 +4,7 @@
 import path from "path";
 import webpack from "webpack";
 import HTMLWebpackPlugin from "html-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
 
 export default {
     entry: "./react/src/index.js",
@@ -43,6 +44,14 @@ export default {
     plugins: [
         new HTMLWebpackPlugin({
             template: "./react/public/index.html"
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: './react/public/images',
+                    to: './images'
+                }
+            ]
         }),
     ]
 }
