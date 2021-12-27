@@ -13,18 +13,6 @@ import {database} from "./controllers/database.js";
 let expressApp = express();
 
 
-if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
-{
-    //Sets up livereload so changes to html will auto refresh browser without plugins
-    let livereloadServer = livereload.createServer({extraExts : ["vue"]});
-
-    livereloadServer.watch("react/build/");
-    livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
-    expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
-    console.log("[livereloadServer] auto refresh for changes: on");
-}
-
-
 // //Connecting to database using process.env.MONGO_URI environment variables
 await database.connect();
 
@@ -40,6 +28,18 @@ expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());
 expressApp.use(express.static("./dist"));
+
+
+if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
+{
+    //Sets up livereload so changes to html will auto refresh browser without plugins
+    let livereloadServer = livereload.createServer({extraExts : ["vue"]});
+
+    livereloadServer.watch("react/build/");
+    livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
+    expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
+    console.log("[livereloadServer] auto refresh for changes: on");
+}
 
 
 //start server
