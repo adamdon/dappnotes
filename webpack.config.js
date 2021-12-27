@@ -11,10 +11,10 @@ const DEVELOPMENT = process.env.NODE_ENV === "development";
 const PRODUCTION = process.env.NODE_ENV === "production";
 
 export default {
-    entry: "./react/src/index.js",
+    entry: "./frontend/src/index.js",
     output: {
         filename: "bundle.js",
-        path: path.resolve("dist"),
+        path: path.resolve('frontend/build'),
         publicPath: "/",
     },
     module: {
@@ -53,12 +53,12 @@ export default {
     },
     plugins: [
         new HTMLWebpackPlugin({
-            template: "./react/public/index.html"
+            template: "./frontend/public/index.html"
         }),
         new CopyPlugin({
             patterns: [
                 {
-                    from: './react/public/images',
+                    from: './frontend/public/images',
                     to: './images'
                 }
             ]

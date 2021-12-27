@@ -1,5 +1,5 @@
 node_modules/
-/react/build/
+/frontend/build/
 .idea/
 .git/
 

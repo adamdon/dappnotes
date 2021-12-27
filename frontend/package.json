@@ -20,6 +20,7 @@
     "react-scripts": "5.0.0"
   },
   "scripts": {
+    "dev-frontend": "react-scripts --openssl-legacy-provider start",
     "start": "npm run clientStart",
     "dev": "concurrently \"cd backend && npm run start\" \"npm run clientStart\"",
     "devMac": "concurrently \"cd backend && npm run start\" \"npm run clientStartMac\"",

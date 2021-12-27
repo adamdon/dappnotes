@@ -4,10 +4,10 @@
   "description": "",
   "main": "backend/server.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev-backend\" \"cd react && npm run clientStartMac\" ",
-    "dev-backend": "NODE_ENV=DEVELOPMENT nodemon --quiet --experimental-modules backend/server --ignore react/build/",
-    "start": "NODE_ENV=PRODUCTION nodemon --quiet --experimental-modules backend/server --ignore react/build/",
-    "build": "rm -rf dist && webpack --mode production"
+    "dev": "concurrently \"npm run dev-backend\" \"cd frontend && npm run dev-frontend\"",
+    "dev-backend": "NODE_ENV=DEVELOPMENT nodemon --quiet --experimental-modules backend/server --ignore frontend/build/",
+    "start": "NODE_ENV=PRODUCTION nodemon --quiet --experimental-modules backend/server --ignore frontend/build/",
+    "build": "rm -rf frontend/build && webpack --mode production"
   },
   "author": "Adam Don",
   "license": "MIT",
