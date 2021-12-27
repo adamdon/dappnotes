@@ -9,12 +9,20 @@ import {router} from "./routes/router.js";
 import {database} from "./controllers/database.js";
 
 
+//Set request handles
+let expressApp = express();
 
-//Sets up livereload so changes to html will auto refresh browser without plugins
-let livereloadServer = livereload.createServer({extraExts : ["vue"]});
 
-livereloadServer.watch("react/build/");
-livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
+if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
+{
+    //Sets up livereload so changes to html will auto refresh browser without plugins
+    let livereloadServer = livereload.createServer({extraExts : ["vue"]});
+
+    livereloadServer.watch("react/build/");
+    livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
+    expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
+    console.log("[livereloadServer] auto refresh for changes: on");
+}
 
 
 // //Connecting to database using process.env.MONGO_URI environment variables
@@ -26,17 +34,11 @@ morgan.token('body', (req, res) => JSON.stringify(req.body));
 let morganFormat = "[express] :method :url - :body";
 let morganConfig = {skip: function (req, res) { return req.method  !== "POST" }};
 
-
-//Set request handles
-let expressApp = express();
-
-expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
 expressApp.use(morgan(morganFormat, morganConfig));
 expressApp.use(express.json({ limit: '21KB' }));
 expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());
-// expressApp.use(express.static("react/build/"));
 expressApp.use(express.static("./dist"));
 
 

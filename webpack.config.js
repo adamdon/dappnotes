@@ -7,6 +7,9 @@ import webpack from "webpack";
 import HTMLWebpackPlugin from "html-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 
+const DEVELOPMENT = process.env.NODE_ENV === "development";
+const PRODUCTION = process.env.NODE_ENV === "production";
+
 export default {
     entry: "./react/src/index.js",
     output: {
@@ -60,6 +63,10 @@ export default {
                 }
             ]
         }),
+        new webpack.DefinePlugin({
+            PRODUCTION: JSON.stringify(PRODUCTION),
+            DEVELOPMENT: JSON.stringify(DEVELOPMENT)
+        })
         // new SourceMapDevToolPlugin({
         //     filename: "[file].map"
         // }),
