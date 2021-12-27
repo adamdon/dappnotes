@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"npm run server\" \"cd react && npm run clientStartMac\" ",
     "start": "nodemon --quiet --experimental-modules backend/server --ignore react/build/",
-    "build": "rm -rf dist && webpack --mode development"
+    "build": "rm -rf dist && webpack --mode production"
   },
   "author": "Adam Don",
   "license": "MIT",

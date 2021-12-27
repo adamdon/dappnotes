@@ -3,6 +3,7 @@
 // const HTMLWebpackPlugin = require("html-webpack-plugin");
 import path from "path";
 import webpack from "webpack";
+// import SourceMapDevToolPlugin from "webpack";
 import HTMLWebpackPlugin from "html-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 
@@ -59,5 +60,8 @@ export default {
                 }
             ]
         }),
+        // new SourceMapDevToolPlugin({
+        //     filename: "[file].map"
+        // }),
     ]
 }
