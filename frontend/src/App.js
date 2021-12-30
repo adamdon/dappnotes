@@ -24,6 +24,7 @@ export default function App()
 {
     const [data, setData] = useData();
 
+    //On mount run once for whole app
     useEffect( () =>
     {
         async function mountUseEffect()
@@ -47,8 +48,25 @@ export default function App()
             console.log(`%c 💻 dappnotes startup (╯°□°)╯︵ ┻━┻ (DEVELOPMENT)`, `background-color: black; font-weight: bold`);
             setData({backendUrl: "http://localhost/api/"});
         }
-        await fetchConfigData();
     }
+
+
+
+
+    //useEffect used to avoid race condition and wait for backend URL to be set
+    useEffect( () =>
+    {
+        async function mountUseEffect()
+        {
+            if(data.backendUrl !== "null")
+            {
+                await fetchConfigData();
+            }
+        }
+        mountUseEffect().then();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data.backendUrl]);
+
 
     async function fetchConfigData()
     {
@@ -56,7 +74,7 @@ export default function App()
 
         // let requestBody = {};
         let methodType = "GET"
-        let requestUrl = (data.config.backendUrl + "testRoute");
+        let requestUrl = (data.backendUrl + "testRoute");
         let requestHeaders = {"Content-Type": "application/json"};
 
         try
@@ -67,6 +85,7 @@ export default function App()
             if(Number(response.status.toString().substring(0, 1)) === 2) //if response code stats with 2
             {
                 const jsonData = await response.json();
+                console.log(jsonData);
                 setData({testKey: jsonData.text});
             }
             else
