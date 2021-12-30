@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
-import DataContextProvider from "./components/data/DataContextProvider";
+import DataContextProvider from "./components/utilities/DataContextProvider";
 import App from './App';
 
 ReactDOM.render(

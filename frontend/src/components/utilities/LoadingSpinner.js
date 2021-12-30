@@ -1,5 +1,5 @@
 import Loader from "react-loader-spinner";
-import {useData} from "../data/DataContextProvider";
+import {useData} from "./DataContextProvider";
 import {useState, useEffect} from "react";
 
 

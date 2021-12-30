@@ -1,10 +1,10 @@
-import NavTop from "../../NavTop";
+import NavTop from "../NavTop";
 import ContainerLayout from "../../containers/ContainerLayout";
 import ContainerContentRow from "../../containers/ContainerContentRow";
 import ContainerContent from "../../containers/ContainerContent";
 import React from "react";
 import BasicComponent from "./BasicComponent";
-import {useData} from "../../data/DataContextProvider";
+import {useData} from "../../utilities/DataContextProvider";
 import InfoComponent from "./InfoComponent";
 
 export default function HomePage()
