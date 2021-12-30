@@ -28,11 +28,27 @@ export default function App()
     {
         async function mountUseEffect()
         {
-            await fetchConfigData();
+            await dappnotesApp();
         }
-        mountUseEffect().then(r => console.log("HostelsPage mountUseEffect complete"))
+        mountUseEffect().then();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+
+    async function dappnotesApp()
+    {
+        if(process.env.REACT_ENV === "PRODUCTION")
+        {
+            console.log(`%c 💻 dappnotes startup (╯°□°)╯︵ ┻━┻ (PRODUCTION)`, `background-color: gray; font-weight: bold`);
+            setData({backendUrl: "./api/"});
+        }
+        else
+        {
+            console.log(`%c 💻 dappnotes startup (╯°□°)╯︵ ┻━┻ (DEVELOPMENT)`, `background-color: black; font-weight: bold`);
+            setData({backendUrl: "http://localhost/api/"});
+        }
+        await fetchConfigData();
+    }
 
     async function fetchConfigData()
     {
@@ -43,19 +59,26 @@ export default function App()
         let requestUrl = (data.config.backendUrl + "testRoute");
         let requestHeaders = {"Content-Type": "application/json"};
 
-        const response = await fetch(requestUrl, {method: methodType, headers: requestHeaders});
-        // const response = await fetch(requestUrl, {method: methodType, headers: requestHeaders, body: JSON.stringify(requestBody)});
+        try
+        {
+            const response = await fetch(requestUrl, {method: methodType, headers: requestHeaders});
+            // const response = await fetch(requestUrl, {method: methodType, headers: requestHeaders, body: JSON.stringify(requestBody)});
 
-        if(Number(response.status.toString().substring(0, 1)) === 2) //if response code stats with 2
-        {
-            const jsonData = await response.json();
-            console.log(jsonData);
-            setData({testKey: jsonData.text});
+            if(Number(response.status.toString().substring(0, 1)) === 2) //if response code stats with 2
+            {
+                const jsonData = await response.json();
+                setData({testKey: jsonData.text});
+            }
+            else
+            {
+                setData({toastError: "Error: " + response.status + " - Could not load"});
+            }
         }
-        else
+        catch (exception)
         {
-            setData({toastError: "Error: " + response.status + " - Could not load"});
+            setData({toastError: "Error: " + exception.message + " " + requestUrl});
         }
+
 
         setData({showSpinner: false});
     }

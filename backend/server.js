@@ -4,6 +4,7 @@ import morgan from "morgan";
 import history from "connect-history-api-fallback";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
+import cors from "cors";
 import errorHandler from "./middleware/errorHandler.js";
 import {router} from "./routes/router.js";
 import {database} from "./controllers/database.js";
@@ -11,6 +12,18 @@ import {database} from "./controllers/database.js";
 
 //Set request handles
 let expressApp = express();
+
+if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
+{
+    //Sets up livereload so changes to html will auto refresh browser without plugins
+    let livereloadServer = livereload.createServer({extraExts : ["vue"]});
+
+    livereloadServer.watch("./frontend/build");
+    livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
+    expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
+    expressApp.use(cors()); //allow Cross-origin resource sharing in development only
+    console.log("[livereloadServer] auto refresh for changes: on");
+}
 
 
 // //Connecting to database using process.env.MONGO_URI environment variables
@@ -29,17 +42,6 @@ expressApp.use("/", router);
 expressApp.use(history());
 expressApp.use(express.static("./frontend/build"));
 
-
-if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
-{
-    //Sets up livereload so changes to html will auto refresh browser without plugins
-    let livereloadServer = livereload.createServer({extraExts : ["vue"]});
-
-    livereloadServer.watch("./frontend/build");
-    livereloadServer.server.once("connection", () => {setTimeout(() => {livereloadServer.refresh("/");}, 100);});
-    expressApp.use(connectLivereload()); //monkey patches HTML with livereload.js for auto F5
-    console.log("[livereloadServer] auto refresh for changes: on");
-}
 
 
 //start server

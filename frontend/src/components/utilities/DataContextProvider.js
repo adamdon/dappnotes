@@ -22,6 +22,7 @@ export default function DataContextProvider({children})
             toastSuccess: "",
             toastError: "",
             showSpinner: false,
+            backendUrl: "",
             config: {
                 backendUrl: "http://localhost/api/",
                 loaded: false,
