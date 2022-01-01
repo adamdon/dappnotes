@@ -1,12 +1,16 @@
 import ContainerLayout from "../../containers/ContainerLayout";
 import ContainerContentRow from "../../containers/ContainerContentRow";
 import ContainerContent from "../../containers/ContainerContent";
-import React from "react";
+import React, {useEffect} from "react";
 import {useData} from "../../utilities/DataContextProvider";
 
 export default function HomePage()
 {
     const [data, setData] = useData();
+
+    // useEffect(() => {
+    //     console.log("HomePage")
+    // }, []) ;
 
 
     return (
