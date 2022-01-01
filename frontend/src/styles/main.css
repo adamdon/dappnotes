@@ -36,6 +36,14 @@ body
     /*display: block;*/
 }
 
+.wrapper-div
+{
+    padding:  0px 0px 0px 0px !important;
+    margin:  0px 0px 0px 0px !important;
+    border:  0px !important;
+    /*display: inline !important;*/
+}
+
 
 
 
@@ -138,6 +146,10 @@ body
 
 }
 
+.my-element {
+    animation: bounce; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s; /* don't forget to set a duration! */
+}
 
 
 
