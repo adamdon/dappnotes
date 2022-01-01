@@ -12,12 +12,14 @@ export default function InfoComponent()
 
     function test()
     {
+        setData({letter4: "x"});
         setData({toastMessage: "hey"});
         setData({showSpinner: true});
     }
 
     function test2()
     {
+        setData({letter4: "y"});
         setData({toastSuccess: "hey you"});
         setData({toastError: "hey error"});
         setData({showSpinner: false});

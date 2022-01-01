@@ -21,15 +21,16 @@ export default function AnimatedMount(props)
         0% {opacity: 1;}
         0% {transform : scale(1);}
         
-        50% {transform : scale(0.75);}
+        // 50% {transform : scale(0.75);}
         
         100% {opacity: 0;}
         100% {transform : scale(0);}
         `
 
+
     return (
 
-        <Animated.div show={props.show} delay={0.25} time={0.5} className={'div-wrapper'} mountAnim={mountAnimation} unmountAnim={unmountAnimation}>
+        <Animated.div show={props.show} time={0.5} className={'div-wrapper'} mountAnim={mountAnimation} unmountAnim={unmountAnimation}>
             {props.children}
         </Animated.div>
 

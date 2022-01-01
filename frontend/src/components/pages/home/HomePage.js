@@ -8,9 +8,9 @@ export default function HomePage()
 {
     const [data, setData] = useData();
 
-    // useEffect(() => {
-    //     console.log("HomePage")
-    // }, []) ;
+    useEffect(() => {
+        console.log("HomePage")
+    }, []) ;
 
 
     return (
