@@ -29,7 +29,7 @@ export default function DataContextProvider({children})
             //     // baseUrl: process.env.REACT_APP_API_URL, //REACT_APP_API_URL must be set or .env URL will be used
             // },
             testKey: "unloaded",
-
+            selectedFile: null,
         }
         return data;
     });

@@ -49,6 +49,11 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-icons": "^4.3.1",
     "react-loader-spinner": "^4.0.0",
-    "react-mount-animation": "^0.0.9"
+    "react-mount-animation": "^0.0.9",
+    "filepond": "^4.30.3",
+    "react-filepond": "^7.1.1",
+    "filepond-plugin-image-preview": "^4.6.10",
+    "filepond-plugin-image-resize": "^2.0.10",
+    "filepond-plugin-file-encode": "^2.1.10"
   }
 }

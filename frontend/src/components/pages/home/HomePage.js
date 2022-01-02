@@ -3,6 +3,7 @@ import ContainerContentRow from "../../containers/ContainerContentRow";
 import ContainerContent from "../../containers/ContainerContent";
 import React, {useEffect} from "react";
 import {useData} from "../../utilities/DataContextProvider";
+import InputFile from "./InputFile";
 
 export default function HomePage()
 {
@@ -28,15 +29,7 @@ export default function HomePage()
 
 
                 <ContainerContentRow>
-                    <ContainerContent size="6" icon="hotel" title="Input">
-
-                        <div className="alert bg-secondary">
-                            <p>
-                                {"Input"}
-                            </p>
-                        </div>
-
-                    </ContainerContent>
+                    <InputFile/>
 
                     <ContainerContent size="6" icon="flag" title="Output">
                         <div className="alert bg-secondary">
