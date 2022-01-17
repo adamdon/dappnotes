@@ -4,6 +4,7 @@ import ContainerContent from "../../containers/ContainerContent";
 import React, {useEffect} from "react";
 import {useData} from "../../utilities/DataContextProvider";
 import InputFile from "./InputFile";
+import NoteWizard from "./NoteWizard";
 
 export default function HomePage()
 {
@@ -19,16 +20,18 @@ export default function HomePage()
             <ContainerLayout>
                 <ContainerContentRow>
                     <ContainerContent size="12" icon="home" title="Welcome">
-                        <div className="alert bg-secondary">
-                            <p>
-                                {"Welcome text here"}
-                            </p>
-                        </div>
+                        <NoteWizard/>
+                        {/*<div className="alert bg-secondary">*/}
+                        {/*    <p>*/}
+                        {/*        {"Welcome text here"}*/}
+                        {/*    </p>*/}
+                        {/*</div>*/}
                     </ContainerContent>
                 </ContainerContentRow>
 
 
                 <ContainerContentRow>
+
                     <InputFile/>
 
                     <ContainerContent size="6" icon="flag" title="Output">

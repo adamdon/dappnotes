@@ -30,6 +30,7 @@ export default function DataContextProvider({children})
             // },
             testKey: "unloaded",
             selectedFile: null,
+            stepWizard: null,
         }
         return data;
     });
