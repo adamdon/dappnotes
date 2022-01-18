@@ -207,15 +207,15 @@ table.table-fit tbody td, table.table-fit tfoot td {
 
 
 
-/* NoteWizard styles */
+/* NoteWizard nav styles */
 
 .dot {
     color: black;
     cursor: pointer;
-    font-size: 36px;
+    font-size: 42px;
     line-height: 1;
-    margin: 0 15px;
-    opacity: .4;
+    margin: 0 20px;
+    opacity: .5;
     text-shadow: none;
     transition: opacity 1s ease,
     text-shadow 1s ease;
@@ -225,17 +225,19 @@ table.table-fit tbody td, table.table-fit tfoot td {
 .active {
     color: red;
     opacity: 1;
-    text-shadow: 0 0px 8px;
+    text-shadow: 0 0px 15px;
 }
 
 .complete {
     color: green;
     opacity: 1;
-    text-shadow: 0 0px 8px;
+    text-shadow: 0 0px 15px;
 }
 
-/* NoteWizard animation */
 
+
+
+/* NoteWizard animation */
 .animated {
     animation-duration: 750ms;
     animation-fill-mode: backwards;

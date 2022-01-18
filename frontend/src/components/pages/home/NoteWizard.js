@@ -24,7 +24,7 @@ export default function NoteWizard(props)
 
 
     return (
-        <StepWizard nav={<WizardNav/>} transitions={transitions} instance={(instance) => setData({stepWizard: instance})}>
+        <StepWizard className={'mt-0'} nav={<WizardNav/>} transitions={transitions} instance={(instance) => setData({stepWizard: instance})}>
             <StepWrapper stepName={"StepIntro"}>
                 <StepIntro/>
             </StepWrapper>
