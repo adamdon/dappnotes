@@ -22,15 +22,11 @@ export default function DataContextProvider({children})
             toastSuccess: "",
             toastError: "",
             showSpinner: false,
+            stepWizard: null,
             backendUrl: "null",
-            // config: {
-            //     backendUrl: "http://localhost/api/",
-            //     loaded: false,
-            //     // baseUrl: process.env.REACT_APP_API_URL, //REACT_APP_API_URL must be set or .env URL will be used
-            // },
             testKey: "unloaded",
             selectedFile: null,
-            stepWizard: null,
+            compressedImage: null,
         }
         return data;
     });
