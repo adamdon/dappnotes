@@ -6,6 +6,7 @@ import StepImageSelect from "./StepImageSelect";
 import StepImageCompress from "./StepImageCompress";
 import {useData} from "../../utilities/DataContextProvider";
 import StepWrapper from "../../containers/StepWrapper";
+import StepDetails from "./StepDetails";
 
 
 
@@ -33,6 +34,9 @@ export default function NoteWizard(props)
             </StepWrapper>
             <StepWrapper stepName={"StepImageCompress"}>
                 <StepImageCompress/>
+            </StepWrapper>
+            <StepWrapper stepName={"StepDetails"}>
+                <StepDetails/>
             </StepWrapper>
         </StepWizard>
     );
