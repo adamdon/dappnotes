@@ -25,9 +25,6 @@ export default function WizardNav(props)
                     ))}
                 </div>
 
-
-
-
             </div>
         </div>
 
