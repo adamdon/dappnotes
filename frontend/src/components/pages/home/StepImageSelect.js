@@ -65,6 +65,7 @@ export default function StepImageSelect(props)
         if(!error)
         {
             setData({selectedFile: file});
+            setData({selectedFileName: file.file.name});
             setIsComplete(true);
         }
 

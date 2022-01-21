@@ -36,7 +36,7 @@ let morganFormat = "[express] :method :url - :body";
 let morganConfig = {skip: function (req, res) { return req.method  !== "POST" }};
 
 expressApp.use(morgan(morganFormat, morganConfig));
-expressApp.use(express.json({ limit: '21KB' }));
+expressApp.use(express.json({ limit: '200KB' }));
 expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());

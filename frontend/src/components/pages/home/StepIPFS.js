@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
-
 import {useData} from "../../utilities/DataContextProvider";
+import ProgressBar from "@ramonak/react-progress-bar";
+import AnimatedMount from "../../utilities/AnimatedMount";
 
 
 
@@ -9,7 +10,7 @@ export default function StepIPFS(props)
 {
     const [data, setData] = useData();
     const [isComplete, setIsComplete] = useState(false);
-
+    const [disabled, setDisabled] = useState(false);
 
 
 
@@ -24,33 +25,76 @@ export default function StepIPFS(props)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.isActive]);
 
+
+
     async function isActiveOnChange(isActive)
     {
-        // if(isActive)
-        // {
-        //     const pinataApiKey = "";
-        //     const pinataSecretApiKey = "";
-        //     const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
-        //
-        //
-        //     pinata.testAuthentication().then((result) =>
-        //     {
-        //         //handle results here
-        //         console.log(result);
-        //     }).catch((err) =>
-        //     {
-        //         //handle error here
-        //         console.log(err);
-        //     });
-        //
-        //     // console.log('isActiveOnChange: ' + isActive.toString());
-        // }
-        // else
-        // {
-        //     // setIsComplete(false)
-        // }
+
     }
 
+    async function fetchPublishOnClick()
+    {
+        setData({showSpinner: true});
+
+        let note = {name: data.name, dataUri: data.dataUri};
+
+        let requestBody = {note: note};
+        let methodType = "POST"
+        let requestUrl = (data.backendUrl + "pinNote/");
+        let requestHeaders = {"Content-Type": "application/json"};
+
+        try
+        {
+            const response = await fetch(requestUrl, {method: methodType, headers: requestHeaders, body: JSON.stringify(requestBody)});
+            const jsonData = await response.json();
+
+            if(Number(response.status.toString().substring(0, 1)) === 2) //if response code stats with 2
+            {
+                if(jsonData.result)
+                {
+                    setData({ipfsHash: jsonData.result.IpfsHash})
+                    setData({toastSuccess: "Published: " + jsonData.result.IpfsHash});
+                    setIsComplete(true);
+                    setDisabled(true);
+                }
+
+            }
+            else
+            {
+                if(jsonData.errors)
+                {
+                    for(let error of jsonData.errors)
+                    {
+                        await new Promise(resolve => setTimeout(resolve, 250));
+                        setData({toastError: "Error: " + response.status + " - " + jsonData.errors[0].message});
+                    }
+                }
+                else
+                {
+                    setData({toastError: "Error: " + response.status + " - Could not load"});
+                }
+            }
+        }
+        catch (exception)
+        {
+            setData({toastError: "Error: " + exception.message + " " + requestUrl});
+        }
+
+        setData({showSpinner: false});
+    }
+
+
+
+
+
+
+
+
+    async function copyLinkOnClick()
+    {
+        await navigator.clipboard.writeText(("https://cloudflare-ipfs.com/ipfs/" + data.ipfsHash));
+        setData({toastMessage: "Link copied to clipboard"});
+    }
 
 
     function previousOnClick()
@@ -66,15 +110,47 @@ export default function StepIPFS(props)
         }
         else
         {
-            setData({toastMessage: "confirm Details"})
+            setData({toastMessage: "Publish image to IPFS"})
         }
     }
-
 
     return (
         <div>
 
-            <h5 className="display-10">Publish Data</h5>
+            <h5 className="display-10">Publish to IPFS</h5>
+
+
+
+            <div className="my-3 text-center">
+                <div className="d-grid gap-2" role="group" aria-label="Submit">
+                    <button onClick={fetchPublishOnClick} disabled={disabled} type="button" className="btn btn-dark">
+                        <span><i className="fa fa-cloud"></i> Publish</span>
+                    </button>
+                </div>
+            </div>
+
+
+
+
+            <AnimatedMount show={isComplete}>
+                <div className="my-3 text-center">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <a href={"https://cloudflare-ipfs.com/ipfs/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                            <span><i className="fa fa-external-link"></i> View on IPFS Gateway</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div className="mt-3 text-center">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <div className="btn-group" role="group">
+                            <button onClick={copyLinkOnClick} disabled={false} type="button" className="btn btn-success"><i className="fa fa-clipboard"></i> Copy Gateway Link</button>
+                        </div>
+                    </div>
+                </div>
+            </AnimatedMount>
+
+
 
 
             <div className="mt-3 text-center fixed-bottom">

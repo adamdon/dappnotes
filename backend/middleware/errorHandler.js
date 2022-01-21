@@ -15,7 +15,7 @@ export default function (error, request, response, next)
     {
         if(error.type === "entity.too.large")
         {
-            return response.status(500).json({errors: [{message: "Max file size is 20KB"}]});
+            return response.status(500).json({errors: [{message: "Max file size too large"}]});
         }
         else
         {

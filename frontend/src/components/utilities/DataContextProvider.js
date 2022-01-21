@@ -26,7 +26,11 @@ export default function DataContextProvider({children})
             backendUrl: "null",
             testKey: "unloaded",
             selectedFile: null,
+            selectedFileName: "",
             compressedImage: null,
+            imageDataUri: "",
+            name: "",
+            ipfsHash: ""
         }
         return data;
     });
