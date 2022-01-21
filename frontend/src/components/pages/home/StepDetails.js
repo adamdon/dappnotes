@@ -7,7 +7,7 @@ import {useData} from "../../utilities/DataContextProvider";
 export default function StepDetails(props)
 {
     const [data, setData] = useData();
-    const [isComplete, setIsComplete] = useState(false);
+    const [isComplete, setIsComplete] = useState(true);
 
 
     function previousOnClick()

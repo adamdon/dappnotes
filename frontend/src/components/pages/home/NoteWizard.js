@@ -7,6 +7,7 @@ import StepImageCompress from "./StepImageCompress";
 import {useData} from "../../utilities/DataContextProvider";
 import StepWrapper from "../../containers/StepWrapper";
 import StepDetails from "./StepDetails";
+import StepIPFS from "./StepIPFS";
 
 
 
@@ -25,7 +26,8 @@ export default function NoteWizard(props)
 
 
     return (
-        <StepWizard className={'mt-0'} nav={<WizardNav/>} transitions={transitions} instance={(instance) => setData({stepWizard: instance})}>
+        <StepWizard className={'mt-0'} nav={<WizardNav/>} transitions={transitions}>
+        {/*<StepWizard className={'mt-0'} nav={<WizardNav/>} transitions={transitions} instance={(instance) => setData({stepWizard: instance})}>*/}
             <StepWrapper stepName={"StepIntro"}>
                 <StepIntro/>
             </StepWrapper>
@@ -37,6 +39,9 @@ export default function NoteWizard(props)
             </StepWrapper>
             <StepWrapper stepName={"StepDetails"}>
                 <StepDetails/>
+            </StepWrapper>
+            <StepWrapper stepName={"StepIPFS"}>
+                <StepIPFS/>
             </StepWrapper>
         </StepWizard>
     );
