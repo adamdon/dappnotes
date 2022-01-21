@@ -24,7 +24,9 @@
     "mongoose": "^5.11.15",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.6",
-    "validator": "^13.5.2"
+    "validator": "^13.5.2",
+    "@pinata/sdk": "^1.1.23",
+    "image-data-uri": "^2.0.1"
   },
   "devDependencies": {
     "react": "^17.0.2",

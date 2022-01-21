@@ -31,7 +31,7 @@ if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
 
 
 //morgan logging config
-morgan.token('body', (req, res) => JSON.stringify(req.body));
+morgan.token('body', (req, res) => JSON.stringify(req.body).slice(0, 120));
 let morganFormat = "[express] :method :url - :body";
 let morganConfig = {skip: function (req, res) { return req.method  !== "POST" }};
 
