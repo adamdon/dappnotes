@@ -1,11 +1,7 @@
 import { Readable } from 'stream'
 import pinataSDK from '@pinata/sdk';
 import imageDataURI from "image-data-uri";
-import validator from 'validator';
-import mongoose from "mongoose";
-
-import {Note} from "../../models/Note.js";
-import validDataUri from "../../helpers/validDataUri.js";
+import validDataUrl from 'valid-data-url';
 
 
 
@@ -19,6 +15,7 @@ export default async function (request, response)
 
         let decodedURI = null;
         let readStream = null;
+        let result = ""
 
 
         if((typeof note == "undefined") || (typeof name == "undefined") || (typeof dataUri == "undefined"))
@@ -26,17 +23,30 @@ export default async function (request, response)
             return response.status(400).json({errors: [{message: "Missing data"}] });
         }
 
+
+        if(name === null || name === "")
+        {
+            return response.status(400).json({errors: [{message: "Name must be set"}] });
+        }
+
+
+        if(dataUri === null || dataUri === "")
+        {
+            return response.status(400).json({errors: [{message: "Data must be set"}] });
+        }
+
+
+        if(!validDataUrl(dataUri))
+        {
+            return response.status(400).json({errors: [{message: "Data URI is invalid"}] });
+        }
+
         
         try
         {
             decodedURI = imageDataURI.decode(dataUri);
             readStream = Readable.from(decodedURI.dataBuffer);
-            readStream.path = "test_file_name.jpg";
-
-            // console.log("decodedURI");
-            // console.log(typeof decodedURI.dataBuffer);
-            // console.log(decodedURI.dataBuffer);
-
+            readStream.path = (name + "." + decodedURI.imageType.split("/").pop()); //set filename
         }
         catch (error)
         {
@@ -52,49 +62,20 @@ export default async function (request, response)
             const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
 
             await pinata.testAuthentication();
+            const pinataPinOptions = {pinataMetadata: {name: name}, pinataOptions: {cidVersion: 1}};
 
-
-            const pinataPinOptions =
-            {
-                pinataMetadata:
-                {
-                    name: "MyCustomNameTest",
-                    keyvalues:
-                    {
-                        customKey: 'customValue',
-                        customKey2: 'customValue2'
-                    }
-                },
-                pinataOptions:
-                {
-                    cidVersion: 0
-                }
-            };
-
-            const opp2 = {test: "text"};
-
-            pinata.pinFileToIPFS(readStream, pinataPinOptions).then((result) => {
-                //handle results here
-                console.log("result");
-                console.log(result);
-            }).catch((err) => {
-                //handle error here
-                console.log("err");
-                console.log(err);
-            });
-
-
-
+            result = await pinata.pinFileToIPFS(readStream, pinataPinOptions);
         }
         catch (error)
         {
-            console.error("Pinata Error: " + error.message);
+            console.error("IPFS Error: " + error.message);
             return response.status(500).json({errors: [{message: "Server error"}]});
         }
 
 
 
-        return response.status(200).json({message: "Data uploaded", note: "newNote"});
+
+        return response.status(200).json({result: result});
     }
     catch (error)
     {

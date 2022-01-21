@@ -26,7 +26,8 @@
     "nodemon": "^2.0.6",
     "validator": "^13.5.2",
     "@pinata/sdk": "^1.1.23",
-    "image-data-uri": "^2.0.1"
+    "image-data-uri": "^2.0.1",
+    "valid-data-url": "^4.0.0"
   },
   "devDependencies": {
     "react": "^17.0.2",
