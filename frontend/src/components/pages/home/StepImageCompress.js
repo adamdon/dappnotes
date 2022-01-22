@@ -118,8 +118,8 @@ export default function StepImageCompress(props)
                     {/*</div>*/}
 
                     <AnimatedMount show={imageUri !== ""}>
-                        <div className={'h-75'}>
-                            {imageUri === "" ? <div> </div> : <a href={imageUri} download={"compressed_" + data.selectedFile.file.name}> <img className={' h-100 rounded'} src={imageUri} alt={"image"}/> </a> }
+                        <div className={''}>
+                            {imageUri === "" ? <div> </div> : <a href={imageUri} download={"compressed_" + data.selectedFile.file.name}> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={imageUri} alt={"image"}/> </a> }
                         </div>
                     </AnimatedMount>
 
