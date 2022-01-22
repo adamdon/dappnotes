@@ -18,6 +18,7 @@ export default function DataContextProvider({children})
             letter: "c",
             letter2: "x",
             number: 0,
+            config: null,
             toastMessage: "",
             toastSuccess: "",
             toastError: "",

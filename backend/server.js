@@ -5,9 +5,10 @@ import history from "connect-history-api-fallback";
 import livereload from "livereload";
 import connectLivereload from "connect-livereload";
 import cors from "cors";
+import config from "./modules/config.js"
 import errorHandler from "./middleware/errorHandler.js";
 import {router} from "./routes/router.js";
-import {database} from "./controllers/database.js";
+import {database} from "./modules/database.js";
 
 
 //Set request handles
@@ -36,7 +37,7 @@ let morganFormat = "[express] :method :url - :body";
 let morganConfig = {skip: function (req, res) { return req.method  !== "POST" }};
 
 expressApp.use(morgan(morganFormat, morganConfig));
-expressApp.use(express.json({ limit: '200KB' }));
+expressApp.use(express.json({ limit: (config.maxFileSizeKb * 4).toString() + "KB" }));
 expressApp.use(errorHandler);
 expressApp.use("/", router);
 expressApp.use(history());

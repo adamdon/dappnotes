@@ -1,4 +1,5 @@
 import { Readable } from 'stream'
+import config from "../../modules/config.js"
 import pinataSDK from '@pinata/sdk';
 import imageDataURI from "image-data-uri";
 import validDataUrl from 'valid-data-url';
@@ -51,6 +52,12 @@ export default async function (request, response)
         catch (error)
         {
             console.error("URI Decode Error: " + error.message);
+            return response.status(500).json({errors: [{message: "Server error"}]});
+        }
+
+        if((decodedURI.dataBuffer.byteLength / 1024) > config.maxFileSizeKb)
+        {
+            console.error("File Size Error: " + (decodedURI.dataBuffer.byteLength / 1024) + "KB is larger than max size of " + config.maxFileSizeKb + "KB");
             return response.status(500).json({errors: [{message: "Server error"}]});
         }
 

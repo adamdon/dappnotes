@@ -1,8 +1,10 @@
+import config from "../../modules/config.js"
+
 export default async function (request, response)
 {
     try
     {
-        let returnObjectJson = {text: "test"};
+        let returnObjectJson = {config: config};
 
         return response.status(200).json(returnObjectJson);
 

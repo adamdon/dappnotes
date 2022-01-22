@@ -77,7 +77,7 @@ export default function App()
 
         // let requestBody = {};
         let methodType = "GET"
-        let requestUrl = (data.backendUrl + "testRoute");
+        let requestUrl = (data.backendUrl + "getConfig");
         let requestHeaders = {"Content-Type": "application/json"};
 
         try
@@ -88,10 +88,17 @@ export default function App()
             if(Number(response.status.toString().substring(0, 1)) === 2) //if response code stats with 2
             {
                 const jsonData = await response.json();
-                // console.log(jsonData);
-                // await new Promise(r => setTimeout(r, 1000));
-                setData({testKey: jsonData.text});
-                setLoaded(true);
+
+                if(jsonData.config)
+                {
+                    setData({config: jsonData.config});
+                    setLoaded(true);
+                    console.log(jsonData.config);
+                }
+                else
+                {
+                    setData({toastError: "Error: Config not found"});
+                }
             }
             else
             {

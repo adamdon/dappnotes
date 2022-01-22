@@ -51,7 +51,7 @@ export default function StepImageCompress(props)
     {
         try
         {
-            const options = {maxSizeMB: 0.02, maxWidthOrHeight: 1000, useWebWorker: true, onProgress: ((progress) => setProgressPercentage(progress))}
+            const options = {maxSizeMB: (data.config.maxFileSizeKb / 1024), maxWidthOrHeight: 1000, useWebWorker: true, onProgress: ((progress) => setProgressPercentage(progress))}
             const compressedFile = await imageCompression(imageFile, options);
 
             return compressedFile;
