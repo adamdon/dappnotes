@@ -69,10 +69,11 @@ export default function StepImageCompress(props)
         const compressedImage = await compressImage(data.selectedFile.file);
         const imageUri = await imageCompression.getDataUrlFromFile(compressedImage);
         setData({compressedImage: compressedImage});
-        setData({dataUri: imageUri});
+        setData({imageDataUri: imageUri});
+        setData({filesizeKb: (compressedImage.size / 1024).toFixed(3)});
         setImageUri(imageUri);
 
-        setData({toastSuccess: "Image compressed from " + (data.selectedFile.file.size / 1024).toFixed(2) + "KB to " + (compressedImage.size / 1024).toFixed(2) + "KB" });
+        setData({toastSuccess: "Image compressed from " + (data.selectedFile.file.size / 1024).toFixed(3) + "KB to " + (compressedImage.size / 1024).toFixed(3) + "KB" });
         setIsComplete(true);
     }
 

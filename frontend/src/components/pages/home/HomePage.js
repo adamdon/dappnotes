@@ -11,7 +11,7 @@ export default function HomePage()
     const [data, setData] = useData();
 
     useEffect(() => {
-        console.log("HomePage")
+        // console.log("HomePage");
     }, []) ;
 
 

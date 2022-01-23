@@ -29,6 +29,8 @@ export default function DataContextProvider({children})
             selectedFile: null,
             selectedFileName: "",
             compressedImage: null,
+            predictedIpfsHash: "",
+            filesizeKb: "0",
             imageDataUri: "",
             name: "",
             ipfsHash: ""

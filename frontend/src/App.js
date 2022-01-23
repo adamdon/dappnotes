@@ -93,7 +93,7 @@ export default function App()
                 {
                     setData({config: jsonData.config});
                     setLoaded(true);
-                    console.log(jsonData.config);
+                    // console.log(jsonData.config);
                 }
                 else
                 {

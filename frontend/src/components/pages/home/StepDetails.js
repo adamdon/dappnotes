@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import Hash from "ipfs-only-hash"
 import {useData} from "../../utilities/DataContextProvider";
 
 
@@ -33,6 +34,10 @@ export default function StepDetails(props)
 
             let filenameWithoutExtension = String(filenameArray);
             setName(filenameWithoutExtension.replace(/[^a-zA-Z0-9]/g,' '));
+
+            const predictedIpfsHash = await Hash.of(Uint8Array.from(data.compressedImage), {cidVersion: 1});
+            setData({predictedIpfsHash: predictedIpfsHash});
+
         }
 
     }
@@ -84,6 +89,7 @@ export default function StepDetails(props)
         }
         else
         {
+            console.log(data.imageDataUri);
             setData({toastMessage: "Confirm name"})
         }
     }
@@ -99,6 +105,44 @@ export default function StepDetails(props)
                 <span className="input-group-text" >Image Name: </span>
                 <input value={name} onChange={e => setName(e.target.value)} onKeyDown={confirmNameOnKeyDown} disabled={disabled} placeholder='Contains letters, numbers and spaces only (e.g "Favorite Photo 01")' type="text" aria-label="name" id="name"  className="form-control w-50"/>
                 <button onClick={confirmNameOnClick} disabled={disabled} className="btn btn-outline-light" type="button" id="submit">Confirm</button>
+            </div>
+
+
+            <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
+                <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                    <thead>
+                        <tr className="table-active">
+                            <th className="text-center text-light" colSpan={2}>Image File</th>
+                        </tr>
+                    </thead>
+                    <tbody className="">
+                        <tr className="table-active">
+                            <td className="text-end text-light px-3">Name <i className="fa fa-font"></i> :</td>
+                            <td className="text-start text-light px-3">{name}</td>
+
+                        </tr>
+                        <tr className="table-active">
+                            <td className="text-end text-light px-3">Original Filename <i className="fa fa-folder"></i> :</td>
+                            <td className="text-start text-light px-3">{data.selectedFileName}</td>
+                        </tr>
+
+                        <tr className="table-active">
+                            <td className="text-end text-light px-3">File Size <i className="fa fa-save"></i> :</td>
+                            <td className="text-start text-light px-3">{data.filesizeKb + "KB"}</td>
+                        </tr>
+
+                        <tr className="table-active">
+                            <td className="text-end text-light px-3">Dimensions <i className="fa fa-expand"></i> :</td>
+                            <td className="text-start text-light px-3">{"placeholder"}</td>
+                        </tr>
+
+                        <tr className="table-active">
+                            <td className="text-end text-light px-3">Predicted CID <i className="fa fa-cloud"></i> :</td>
+                            <td className="text-start text-light px-3">{data.predictedIpfsHash}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
 
 

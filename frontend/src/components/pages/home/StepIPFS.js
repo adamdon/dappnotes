@@ -36,7 +36,7 @@ export default function StepIPFS(props)
     {
         setData({showSpinner: true});
 
-        let note = {name: data.name, dataUri: data.dataUri};
+        let note = {name: data.name, dataUri: data.imageDataUri};
 
         let requestBody = {note: note};
         let methodType = "POST"
