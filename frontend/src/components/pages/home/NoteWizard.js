@@ -8,6 +8,7 @@ import {useData} from "../../utilities/DataContextProvider";
 import StepWrapper from "../../containers/StepWrapper";
 import StepDetails from "./StepDetails";
 import StepIPFS from "./StepIPFS";
+import StepFinal from "./StepFinal";
 
 
 
@@ -42,6 +43,9 @@ export default function NoteWizard(props)
             </StepWrapper>
             <StepWrapper stepName={"StepIPFS"}>
                 <StepIPFS/>
+            </StepWrapper>
+            <StepWrapper stepName={"StepFinal"}>
+                <StepFinal/>
             </StepWrapper>
         </StepWizard>
     );
