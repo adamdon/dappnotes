@@ -89,7 +89,7 @@ export default function StepDetails(props)
         }
         else
         {
-            console.log(data.imageDataUri);
+            // console.log(data.imageDataUri);
             setData({toastMessage: "Confirm name"})
         }
     }

@@ -135,7 +135,7 @@ export default function StepIPFS(props)
             <AnimatedMount show={isComplete}>
                 <div className="my-3 text-center">
                     <div className="d-grid gap-2" role="group" aria-label="Submit">
-                        <a href={"https://cloudflare-ipfs.com/ipfs/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                        <a href={"https://gateway.pinata.cloud/ipfs/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
                             <span><i className="fa fa-external-link"></i> View on IPFS Gateway</span>
                         </a>
                     </div>
