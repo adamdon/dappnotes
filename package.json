@@ -61,6 +61,7 @@
     "filepond-plugin-file-encode": "^2.1.10",
     "browser-image-compression": "^1.0.17",
     "@ramonak/react-progress-bar": "^4.2.0",
-    "ipfs-only-hash": "^4.0.0"
+    "ipfs-only-hash": "^4.0.0",
+    "ethers": "^5.5.3"
   }
 }
