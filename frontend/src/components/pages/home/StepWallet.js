@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
+import detectEthereumProvider from '@metamask/detect-provider'
 import { ethers } from 'ethers';
+import Web3Modal from "web3modal";
 
 import {useData} from "../../utilities/DataContextProvider";
 import AnimatedMount from "../../utilities/AnimatedMount";
@@ -18,6 +20,7 @@ export default function StepWallet(props)
     const [isConnected, setConnected] = useState(false);
 
     const [balance, setBalance] = useState("");
+    const [address, setAddress] = useState("");
 
 
 
@@ -37,7 +40,7 @@ export default function StepWallet(props)
 
     async function isActiveOnChange(isActive)
     {
-        console.log(window.ethereum.isConnected());
+        // console.log(window.ethereum.isConnected());
         if(window.ethereum)
         {
             setIsInstalled(true);
@@ -53,15 +56,30 @@ export default function StepWallet(props)
     {
         try
         {
-            const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const balance = await provider.getBalance(account);
-            setBalance(ethers.utils.formatEther(balance));
+            setData({toastMessage: "Connect only one account"});
+            // let detectProvider = await detectEthereumProvider()
+
+
+            let providerOptions = {};
+            let web3Modal = new Web3Modal({providerOptions});
+            let instance = await web3Modal.connect();
+
+            let provider = new ethers.providers.Web3Provider(instance);
+            let accounts = await provider.send("eth_requestAccounts", []);
+            let balance = await provider.getBalance(accounts[0]);
+            let balanceFormatted = ethers.utils.formatEther(balance);
+            let signer = provider.getSigner();
+            let addressSigner = await signer.getAddress()
+
+
+            setBalance(balanceFormatted);
+            setAddress(addressSigner);
             setConnected(true);
         }
         catch (error)
         {
-            console.error(error);
+            console.log(error);
+            setData({toastError: error.message});
         }
     }
 
@@ -103,7 +121,7 @@ export default function StepWallet(props)
                     <div className="my-3 text-center">
                         <div className="d-grid gap-2" role="group" aria-label="Submit">
                             <button onClick={connectOnClick} disabled={disabled} type="button" className="btn btn-dark">
-                                <span><i className="fa fa-plug"></i> Connect to wallet</span>
+                                <span><i className="fa fa-plug"></i> Connect to wallet (Select one wallet only)</span>
                             </button>
                         </div>
                     </div>
@@ -111,7 +129,34 @@ export default function StepWallet(props)
 
                     <AnimatedMount show={isConnected}>
                         <div className={''}>
-                            {balance}
+
+                            <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
+                                <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                                    <thead>
+                                        <tr className="table-active">
+                                            <th className="text-center text-light" colSpan={2}>Wallet Details</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody className="">
+
+                                        <tr className="table-active">
+                                            <td className="text-end text-light px-3">Address <i className="fa fa-at"></i> :</td>
+                                            <td className="text-start text-light px-3">{address}</td>
+                                        </tr>
+
+                                        <tr className="table-active">
+                                            <td className="text-end text-light px-3">Balance <i className="fa fa-university"></i> :</td>
+                                            <td className="text-start text-light px-3">{balance}</td>
+                                        </tr>
+
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+
                         </div>
                     </AnimatedMount>
 
