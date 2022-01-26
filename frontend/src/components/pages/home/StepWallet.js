@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
-import detectEthereumProvider from '@metamask/detect-provider'
+// import detectEthereumProvider from '@metamask/detect-provider'
 import { ethers } from 'ethers';
 import Web3Modal from "web3modal";
 
+// import DappNotes from '../../../../../blockchain/src/artifacts/contracts/DappNotes.sol/DappNotes.json';
+import DappNotes from './DappNotes.json';
 import {useData} from "../../utilities/DataContextProvider";
 import AnimatedMount from "../../utilities/AnimatedMount";
 
@@ -84,6 +86,54 @@ export default function StepWallet(props)
     }
 
 
+    async function testTransaction()
+    {
+        try
+        {
+            setData({toastMessage: "Test transaction"});
+            // let detectProvider = await detectEthereumProvider()
+
+
+            let providerOptions = {};
+            let web3Modal = new Web3Modal({providerOptions});
+            let instance = await web3Modal.connect();
+
+            let provider = new ethers.providers.Web3Provider(instance);
+            let accounts = await provider.send("eth_requestAccounts", []);
+            let balance = await provider.getBalance(accounts[0]);
+            let balanceFormatted = ethers.utils.formatEther(balance);
+            let signer = provider.getSigner();
+            let addressSigner = await signer.getAddress();
+
+
+
+
+            const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+            const contract = new ethers.Contract(contractAddress, DappNotes.abi, signer);
+
+
+
+            const connection = contract.connect(signer);
+            const addr = connection.address;
+            const result = await contract.payToMint(addr, data.ipfsHash, {value: ethers.utils.parseEther('0.05'),});
+            await result.wait();
+
+
+            const isContentOwned = await contract.isContentOwned(data.ipfsHash);
+
+            console.log("isContentOwned");
+            console.log(isContentOwned);
+            console.log(result);
+            console.log("isContentOwned");
+        }
+        catch (error)
+        {
+            console.log(error);
+            setData({toastError: error.message});
+        }
+    }
+
+
 
 
 
@@ -129,6 +179,14 @@ export default function StepWallet(props)
 
                     <AnimatedMount show={isConnected}>
                         <div className={''}>
+
+                            <div className="my-3 text-center">
+                                <div className="d-grid gap-2" role="group" aria-label="Submit">
+                                    <button onClick={testTransaction} disabled={disabled} type="button" className="btn btn-dark">
+                                        <span><i className="fa fa-plug"></i>Test transaction</span>
+                                    </button>
+                                </div>
+                            </div>
 
                             <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
                                 <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
