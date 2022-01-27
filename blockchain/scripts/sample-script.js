@@ -24,7 +24,7 @@ async function main() {
 
     await dappnotes.deployed();
 
-    console.log("My NFT deployed to:", dappnotes.address);
+    console.log("DappNotes deployed to:", dappnotes.address);
 
 }
 
