@@ -128,8 +128,25 @@ export default function StepWallet(props)
         }
         catch (error)
         {
-            console.log(error);
-            setData({toastError: error.message});
+            if(error.data.code === -32603)
+            {
+                const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
+
+                if(contractError === "Note Already Minted")
+                {
+                    setData({toastError: contractError});
+                }
+                else
+                {
+                    console.error(contractError);
+                    setData({toastError: error.data.message});
+                }
+            }
+            else
+            {
+                console.error(error);
+                setData({toastError: error.message});
+            }
         }
     }
 
