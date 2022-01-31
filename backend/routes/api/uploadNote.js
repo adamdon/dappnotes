@@ -2,7 +2,6 @@ import validator from 'validator';
 import mongoose from "mongoose";
 
 import {Note} from "../../models/Note.js";
-import validDataUri from "../../modules/validDataUri.js";
 
 
 
