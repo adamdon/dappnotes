@@ -16,7 +16,11 @@ export default async function (request, response)
 
         let decodedURI = null;
         let readStream = null;
-        let result = ""
+        let meta = null;
+        let metaReadStream = null;
+
+        let imageResult = null;
+        let metaResult = null;
 
 
         if((typeof note == "undefined") || (typeof name == "undefined") || (typeof dataUri == "undefined"))
@@ -69,9 +73,18 @@ export default async function (request, response)
             const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
 
             await pinata.testAuthentication();
-            const pinataPinOptions = {pinataMetadata: {name: name}, pinataOptions: {cidVersion: 1}};
 
-            result = await pinata.pinFileToIPFS(readStream, pinataPinOptions);
+            const pinataImagePinOptions = {pinataMetadata: {name: ("IMAGE: " + name)}, pinataOptions: {cidVersion: 1}};
+            imageResult = await pinata.pinFileToIPFS(readStream, pinataImagePinOptions);
+
+
+            //meta data pinning
+            meta = {name: name, imageIpfsHash: imageResult.IpfsHash, imageUri: "NOT_SET"};
+            metaReadStream = Readable.from(JSON.stringify(meta));
+            metaReadStream.path = (name + ".json"); //set filename
+            const pinataMetaPinOptions = {pinataMetadata: {name: ("META: " + name)}, pinataOptions: {cidVersion: 1}};
+            metaResult = await pinata.pinFileToIPFS(metaReadStream, pinataMetaPinOptions);
+
         }
         catch (error)
         {
@@ -82,7 +95,7 @@ export default async function (request, response)
 
 
 
-        return response.status(200).json({result: result});
+        return response.status(200).json({result: metaResult});
     }
     catch (error)
     {
