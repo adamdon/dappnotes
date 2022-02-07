@@ -50,21 +50,15 @@ export default function StepIPFS(props)
 
             if(Number(response.status.toString().substring(0, 1)) === 2) //if response code stats with 2
             {
-                if(jsonData.result)
+                if(jsonData.note)
                 {
-                    //request the json ipfs metadata
-                    const pinataBaseUrl = "https://gateway.pinata.cloud/ipfs/"
-                    const metaResponse = await fetch(pinataBaseUrl + jsonData.result.IpfsHash, {method: "GET", headers: requestHeaders});
-                    const metaJsonData = await metaResponse.json();
+                    // const metaResponse = await fetch("https://gateway.pinata.cloud/ipfs/" + jsonData.result.IpfsHash, {method: "GET", headers: requestHeaders});
+                    // const metaJsonData = await metaResponse.json();
 
 
-                    console.log("metaJsonData");
-                    console.log(metaJsonData);
-                    console.log("metaJsonData");
-
-
-                    setData({ipfsHash: metaJsonData.imageIpfsHash})
-                    setData({toastSuccess: "Published: " + jsonData.result.IpfsHash});
+                    setData({ipfsHash: jsonData.note.imageIpfsHash})
+                    setData({metaNote: jsonData.note})
+                    setData({toastSuccess: "Published: " + jsonData.note.imageIpfsHash});
                     setIsComplete(true);
                     setDisabled(true);
                 }

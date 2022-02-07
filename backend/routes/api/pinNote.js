@@ -74,6 +74,7 @@ export default async function (request, response)
 
             await pinata.testAuthentication();
 
+            //image data pinning
             const pinataImagePinOptions = {pinataMetadata: {name: ("IMAGE: " + name)}, pinataOptions: {cidVersion: 1}};
             imageResult = await pinata.pinFileToIPFS(readStream, pinataImagePinOptions);
 
@@ -82,9 +83,16 @@ export default async function (request, response)
             meta = {name: name, imageIpfsHash: imageResult.IpfsHash, imageUri: "NOT_SET"};
             metaReadStream = Readable.from(JSON.stringify(meta));
             metaReadStream.path = (name + ".json"); //set filename
-            const pinataMetaPinOptions = {pinataMetadata: {name: ("META: " + name)}, pinataOptions: {cidVersion: 1}};
-            metaResult = await pinata.pinFileToIPFS(metaReadStream, pinataMetaPinOptions);
-
+            metaResult = await pinata.pinFileToIPFS(metaReadStream, {pinataMetadata: {name: ("META: " + name)}, pinataOptions: {cidVersion: 1}});
+            if(metaResult.IpfsHash)
+            {
+                meta.metaIpfsHash = metaResult.IpfsHash;
+            }
+            else
+            {
+                console.error("IPFS Meta Error: " + metaResult);
+                return response.status(500).json({errors: [{message: "Server error"}]});
+            }
         }
         catch (error)
         {
@@ -94,8 +102,7 @@ export default async function (request, response)
 
 
 
-
-        return response.status(200).json({result: metaResult});
+        return response.status(200).json({note: meta});
     }
     catch (error)
     {

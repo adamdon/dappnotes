@@ -22,6 +22,7 @@ export default function DataContextProvider({children})
             toastMessage: "",
             toastSuccess: "",
             toastError: "",
+            metaNote: null,
             showSpinner: false,
             stepWizard: null,
             backendUrl: "null",
