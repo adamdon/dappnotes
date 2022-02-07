@@ -12,7 +12,7 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable {
     Counters.Counter private _tokenIdCounter;
     mapping(string => uint8) existingURIs;
 
-    constructor() ERC721("DappNotes", "DAN") {}
+    constructor() ERC721("DappNotes", "DAP") {}
 
     function _baseURI() internal pure override returns (string memory) {
         return "ipfs://";
@@ -41,6 +41,14 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable {
     }
 
 
+
+
+
+
+
+    function getContentByKey(string memory key) public view returns (uint8) {
+        return existingURIs[key];
+    }
 
     function isContentOwned(string memory uri) public view returns (bool) {
         return existingURIs[uri] == 1;
