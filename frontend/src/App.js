@@ -14,6 +14,7 @@ import TestPage from "./components/pages/test/TestPage";
 import ToastBock from "./components/utilities/ToastBlock";
 import LoadingSpinner from "./components/utilities/LoadingSpinner";
 import AnimatedMount from "./components/utilities/AnimatedMount";
+import ViewPage from "./components/pages/view/ViewPage";
 
 
 
@@ -121,6 +122,7 @@ export default function App()
             <NavTop/>
             <Routes>
                 <Route path="/" element={<AnimatedMount show={loaded}> <HomePage /> </AnimatedMount>} />
+                <Route path="/view" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
                 <Route path="/test" element={<AnimatedMount show={loaded}> <TestPage /> </AnimatedMount>} />
             </Routes>
             <LoadingSpinner></LoadingSpinner>
