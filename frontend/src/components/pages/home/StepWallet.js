@@ -3,8 +3,6 @@ import React, {useEffect, useState} from "react";
 import { ethers } from 'ethers';
 import Web3Modal from "web3modal";
 
-// import DappNotes from '../../../../../blockchain/src/artifacts/contracts/DappNotes.sol/DappNotes.json';
-import DappNotes from './DappNotes.json';
 import {useData} from "../../utilities/DataContextProvider";
 import AnimatedMount from "../../utilities/AnimatedMount";
 
@@ -77,6 +75,7 @@ export default function StepWallet(props)
             setBalance(balanceFormatted);
             setAddress(addressSigner);
             setConnected(true);
+            setIsComplete(true);
         }
         catch (error)
         {
@@ -86,69 +85,69 @@ export default function StepWallet(props)
     }
 
 
-    async function testTransaction()
-    {
-        try
-        {
-            setData({toastMessage: "Test transaction"});
-            // let detectProvider = await detectEthereumProvider()
-
-
-            let providerOptions = {};
-            let web3Modal = new Web3Modal({providerOptions});
-            let instance = await web3Modal.connect();
-
-            let provider = new ethers.providers.Web3Provider(instance);
-            let accounts = await provider.send("eth_requestAccounts", []);
-            let balance = await provider.getBalance(accounts[0]);
-            let balanceFormatted = ethers.utils.formatEther(balance);
-            let signer = provider.getSigner();
-            let addressSigner = await signer.getAddress();
-
-
-
-
-            const deploymentAddress = data.config.deploymentAddress;
-            const contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
-
-
-
-            const connection = contract.connect(signer);
-            const addr = connection.address;
-            const result = await contract.payToMint(addr, data.ipfsHash, {value: ethers.utils.parseEther('0.05'),});
-            await result.wait();
-
-
-            const isContentOwned = await contract.isContentOwned(data.ipfsHash);
-
-            console.log("isContentOwned");
-            console.log(isContentOwned);
-            console.log(result);
-            console.log("isContentOwned");
-        }
-        catch (error)
-        {
-            if(error.data.code === -32603)
-            {
-                const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
-
-                if(contractError === "Note Already Minted")
-                {
-                    setData({toastError: contractError});
-                }
-                else
-                {
-                    console.error(contractError);
-                    setData({toastError: error.data.message});
-                }
-            }
-            else
-            {
-                console.error(error);
-                setData({toastError: error.message});
-            }
-        }
-    }
+    // async function testTransaction()
+    // {
+    //     try
+    //     {
+    //         setData({toastMessage: "Test transaction"});
+    //         // let detectProvider = await detectEthereumProvider()
+    //
+    //
+    //         let providerOptions = {};
+    //         let web3Modal = new Web3Modal({providerOptions});
+    //         let instance = await web3Modal.connect();
+    //
+    //         let provider = new ethers.providers.Web3Provider(instance);
+    //         let accounts = await provider.send("eth_requestAccounts", []);
+    //         let balance = await provider.getBalance(accounts[0]);
+    //         let balanceFormatted = ethers.utils.formatEther(balance);
+    //         let signer = provider.getSigner();
+    //         let addressSigner = await signer.getAddress();
+    //
+    //
+    //
+    //
+    //         const deploymentAddress = data.config.deploymentAddress;
+    //         const contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
+    //
+    //
+    //
+    //         const connection = contract.connect(signer);
+    //         const addr = connection.address;
+    //         const result = await contract.payToMint(addr, data.ipfsHash, {value: ethers.utils.parseEther('0.05'),});
+    //         await result.wait();
+    //
+    //
+    //         const isContentOwned = await contract.isContentOwned(data.ipfsHash);
+    //
+    //         console.log("isContentOwned");
+    //         console.log(isContentOwned);
+    //         console.log(result);
+    //         console.log("isContentOwned");
+    //     }
+    //     catch (error)
+    //     {
+    //         if(error.data.code && error.data.code === -32603)
+    //         {
+    //             const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
+    //
+    //             if(contractError === "Note Already Minted")
+    //             {
+    //                 setData({toastError: contractError});
+    //             }
+    //             else
+    //             {
+    //                 console.error(contractError);
+    //                 setData({toastError: error.data.message});
+    //             }
+    //         }
+    //         else
+    //         {
+    //             console.error(error);
+    //             setData({toastError: error.message});
+    //         }
+    //     }
+    // }
 
 
 
@@ -197,13 +196,13 @@ export default function StepWallet(props)
                     <AnimatedMount show={isConnected}>
                         <div className={''}>
 
-                            <div className="my-3 text-center">
-                                <div className="d-grid gap-2" role="group" aria-label="Submit">
-                                    <button onClick={testTransaction} disabled={disabled} type="button" className="btn btn-dark">
-                                        <span><i className="fa fa-plug"></i>Test transaction</span>
-                                    </button>
-                                </div>
-                            </div>
+                            {/*<div className="my-3 text-center">*/}
+                            {/*    <div className="d-grid gap-2" role="group" aria-label="Submit">*/}
+                            {/*        <button onClick={testTransaction} disabled={disabled} type="button" className="btn btn-dark">*/}
+                            {/*            <span><i className="fa fa-plug"></i>Test transaction</span>*/}
+                            {/*        </button>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
 
                             <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
                                 <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">

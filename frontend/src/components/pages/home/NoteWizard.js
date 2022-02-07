@@ -10,6 +10,7 @@ import StepDetails from "./StepDetails";
 import StepIPFS from "./StepIPFS";
 import StepFinal from "./StepFinal";
 import StepWallet from "./StepWallet";
+import StepTransaction from "./StepTransaction";
 
 
 
@@ -47,6 +48,9 @@ export default function NoteWizard(props)
             </StepWrapper>
             <StepWrapper stepName={"StepWallet"}>
                 <StepWallet/>
+            </StepWrapper>
+            <StepWrapper stepName={"StepTransaction"}>
+                <StepTransaction/>
             </StepWrapper>
             <StepWrapper stepName={"StepFinal"}>
                 <StepFinal/>
