@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -11,7 +12,8 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
-    mapping(string => uint8) existingURIs;
+    mapping(string => uint8) public existingURIs;
+    mapping(string => string) public storedNotes;
 
     constructor() ERC721("DappNotes", "DAP") {}
 
@@ -48,9 +50,15 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
 
 
 
-    function getContentByKey(string memory key) public view returns (uint8)
+    function getContentByKey(string memory key) public view returns (string memory)
     {
-        return existingURIs[key];
+        console.log("getContentByKey");
+        console.log(key);
+        console.log(storedNotes[key]);
+        console.log("getContentByKey");
+
+
+        return storedNotes[key];
     }
 
     function isContentOwned(string memory uri) public view returns (bool)
@@ -67,6 +75,8 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
         uint256 newItemId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         existingURIs[metadataURI] = 1;
+        storedNotes[metadataURI] = metadataURI;
+
 
 
         _mint(recipient, newItemId);

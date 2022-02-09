@@ -20,8 +20,9 @@ export default function ViewPage()
             <ContainerLayout>
                 <ContainerContentRow>
                     <ContainerContent size="12" icon="eye" title="View Note">
-                        {useParams().keyId}
+
                         <KeyInput keyId={useParams().keyId}/>
+
                     </ContainerContent>
                 </ContainerContentRow>
 
