@@ -51,8 +51,9 @@ export default function StepTransaction(props)
             if(!isContentOwned)
             {
                 const connection = contract.connect(signer);
-                const addr = connection.address;
-                const result = await contract.payToMint(addr, data.ipfsHash, {value: ethers.utils.parseEther('0.05'),});
+                const connectionAddress = connection.address;
+                //const result = await contract.payToMint(connectionAddress, JSON.stringify(data.metaNote), {value: ethers.utils.parseEther('0.05'),});
+                const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.metaNote), {value: ethers.utils.parseEther('0.05'),});
                 await result.wait();
                 console.log(result);
 

@@ -67,20 +67,22 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
     }
 
 
-    function payToMint(address recipient, string memory metadataURI) public payable returns (uint256)
+
+
+    function mintNote(address recipient, string memory keyId, string memory note) public payable returns (uint256)
     {
-        require(existingURIs[metadataURI] != 1, 'Note Already Minted');
+        require(existingURIs[keyId] != 1, 'Note Already Minted');
         require (msg.value >= 0.05 ether, 'Sent funds too low');
 
         uint256 newItemId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        existingURIs[metadataURI] = 1;
-        storedNotes[metadataURI] = metadataURI;
+        existingURIs[keyId] = 1;
+        storedNotes[keyId] = note;
 
 
 
         _mint(recipient, newItemId);
-        _setTokenURI(newItemId, metadataURI);
+        _setTokenURI(newItemId, keyId);
 
         return newItemId;
     }

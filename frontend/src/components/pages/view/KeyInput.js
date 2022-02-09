@@ -62,11 +62,12 @@ export default function KeyInput(props)
             {
                 setData({toastSuccess: "isContentOwned: " + isContentOwned.toString()});
 
-                let getContentByKey = await contract.getContentByKey(keyInput);
+                let noteContentString = await contract.getContentByKey(keyInput);
+                let noteContentObject = JSON.parse(noteContentString);
+
                 console.log("getContentByKey");
-                console.log(deploymentAddress);
-                console.log(getContentByKey);
-                console.log(typeof getContentByKey);
+                console.log(noteContentObject);
+                console.log(typeof noteContentObject);
                 console.log("getContentByKey");
 
             }
