@@ -1,8 +1,10 @@
+import React, {useEffect} from "react";
+import { useParams } from "react-router-dom";
 import ContainerLayout from "../../containers/ContainerLayout";
 import ContainerContentRow from "../../containers/ContainerContentRow";
 import ContainerContent from "../../containers/ContainerContent";
-import React, {useEffect} from "react";
 import {useData} from "../../utilities/DataContextProvider";
+import KeyInput from "./KeyInput";
 
 export default function ViewPage()
 {
@@ -17,11 +19,9 @@ export default function ViewPage()
         <span>
             <ContainerLayout>
                 <ContainerContentRow>
-                    <ContainerContent size="12" icon="home" title="View Note">
-
-
-                        <div>testtesttest</div>
-
+                    <ContainerContent size="12" icon="eye" title="View Note">
+                        {useParams().keyId}
+                        <KeyInput keyId={useParams().keyId}/>
                     </ContainerContent>
                 </ContainerContentRow>
 

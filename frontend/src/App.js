@@ -122,7 +122,8 @@ export default function App()
             <NavTop/>
             <Routes>
                 <Route path="/" element={<AnimatedMount show={loaded}> <HomePage /> </AnimatedMount>} />
-                <Route path="/view" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
+                <Route path="/view/" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
+                <Route path="/view/:keyId" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
                 <Route path="/test" element={<AnimatedMount show={loaded}> <TestPage /> </AnimatedMount>} />
             </Routes>
             <LoadingSpinner></LoadingSpinner>
