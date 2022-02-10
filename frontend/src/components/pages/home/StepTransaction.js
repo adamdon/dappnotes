@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useData} from "../../utilities/DataContextProvider";
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
+import AnimatedMount from "../../utilities/AnimatedMount";
 
 
 
@@ -56,7 +57,7 @@ export default function StepTransaction(props)
                 const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.metaNote), {value: ethers.utils.parseEther('0.05'),});
                 await result.wait();
                 console.log(result);
-
+                setIsComplete(true);
             }
             else
             {
@@ -89,6 +90,11 @@ export default function StepTransaction(props)
     }
 
 
+    async function copyLinkOnClick()
+    {
+        await navigator.clipboard.writeText(("/view/" + data.ipfsHash));
+        setData({toastMessage: "Link copied to clipboard"});
+    }
 
 
 
@@ -123,6 +129,28 @@ export default function StepTransaction(props)
                     </button>
                 </div>
             </div>
+
+
+            <AnimatedMount show={isComplete}>
+                <div className={'text-center'}><h4 className="display-16">Note Successfully Minted On Blockchain</h4></div>
+                <div className="my-3 text-center">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                            <span><i className="fa fa-external-link"></i> View Note Content</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div className="mt-3 text-center">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <div className="btn-group" role="group">
+                            <button onClick={copyLinkOnClick} type="button" className="btn btn-success"><i className="fa fa-clipboard"></i> Copy Note Link</button>
+                        </div>
+                    </div>
+                </div>
+
+            </AnimatedMount>
+
 
             <div className="mt-3 text-center fixed-bottom">
                 <div className="d-grid gap-2" role="group" aria-label="Submit">
