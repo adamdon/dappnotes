@@ -13,6 +13,7 @@ export default function KeyInput(props)
     const [data, setData] = useData();
 
     const [keyInput, setKeyInput] = useState("");
+    const [noteOutput, setNoteOutput] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [complete, setComplete] = useState(false);
 
@@ -63,14 +64,8 @@ export default function KeyInput(props)
                 setData({toastSuccess: "isContentOwned: " + isContentOwned.toString()});
 
                 let noteContentString = await contract.getContentByKey(keyInput);
-//                await noteContentString.wait();
                 let noteContentObject = JSON.parse(noteContentString);
-
-                console.log("getContentByKey");
-                console.log(noteContentObject);
-                console.log(typeof noteContentObject);
-                console.log("getContentByKey");
-
+                setNoteOutput(noteContentObject.toString);
             }
             else
             {
@@ -127,6 +122,7 @@ export default function KeyInput(props)
             <AnimatedMount show={complete}>
                 <div className="alert bg-secondary">
                     {"Complete"}
+                    {noteOutput}
                 </div>
             </AnimatedMount>
 
