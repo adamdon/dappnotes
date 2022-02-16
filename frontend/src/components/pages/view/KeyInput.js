@@ -63,8 +63,9 @@ export default function KeyInput(props)
                     {
                         try
                         {
-                            //If successfully retrieved note
                             let noteContentObject = JSON.parse(noteContentString);
+
+                            //successfully retrieved note
                             setNoteOutput(noteContentObject);
 
                             setKeyInput("");
@@ -146,10 +147,42 @@ export default function KeyInput(props)
 
 
             <AnimatedMount show={complete}>
-                <div className="alert bg-secondary">
-                    {"Complete "}
-                    {JSON.stringify(noteOutput)}
+
+                <div className="text-center rounded-3 py-3 my-3">
+                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                        <thead>
+                            <tr className="table-active">
+                                <th className="text-center text-light" colSpan={2}>Note Contents</th>
+                            </tr>
+                        </thead>
+                        <tbody className="">
+                            <tr className="table-active">
+                                <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
+                                <td className="text-start text-light px-3">
+                                    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>
+                                </td>
+                            </tr>
+                            <tr className="table-active">
+                                <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
+                                <td className="text-start text-light px-3">
+                                    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>
+                                </td>
+                            </tr>
+
+                            <tr className="table-active">
+                                <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
+                                <td className="text-start text-light px-3">
+                                    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
+
+                {/*<div className="alert bg-secondary text-center">*/}
+                {/*    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>*/}
+                {/*</div>*/}
             </AnimatedMount>
 
         </div>
