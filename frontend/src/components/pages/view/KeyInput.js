@@ -29,76 +29,102 @@ export default function KeyInput(props)
 
     async function requestNote()
     {
-        setDisabled(true);
-        setData({showSpinner: true});
 
-        console.log("requestNote: " + keyInput);
-
-
-
-        try
+        if(keyInput !== "" && keyInput !== " ")
         {
-            setData({toastMessage: "Test transaction"});
-            // let detectProvider = await detectEthereumProvider()
+            // setComplete(false);
+            setDisabled(true);
+            setData({showSpinner: true});
 
-
-            let providerOptions = {};
-            let web3Modal = new Web3Modal({providerOptions});
-            let instance = await web3Modal.connect();
-
-            let provider = new ethers.providers.Web3Provider(instance);
-            let signer = provider.getSigner();
-            let addressSigner = await signer.getAddress();
-            let accounts = await provider.send("eth_requestAccounts", []);
-            let account = accounts[0];
-            let balance = await provider.getBalance(account);
-            let balanceFormatted = ethers.utils.formatEther(balance);
-
-
-            let deploymentAddress = data.config.deploymentAddress;
-            let contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
-
-            let isContentOwned = await contract.isContentOwned(keyInput);
-            if(isContentOwned)
+            try
             {
-                setData({toastSuccess: "isContentOwned: " + isContentOwned.toString()});
+                let providerOptions = {};
+                let web3Modal = new Web3Modal({providerOptions});
+                let instance = await web3Modal.connect();
 
-                let noteContentString = await contract.getContentByKey(keyInput);
-                let noteContentObject = JSON.parse(noteContentString);
-                setNoteOutput(noteContentObject.toString);
-            }
-            else
-            {
-                setData({toastError: "isContentOwned: " + isContentOwned.toString()});
-            }
+                let provider = new ethers.providers.Web3Provider(instance);
+                let signer = provider.getSigner();
+                let addressSigner = await signer.getAddress();
+                let accounts = await provider.send("eth_requestAccounts", []);
+                let account = accounts[0];
+                let balance = await provider.getBalance(account);
+                let balanceFormatted = ethers.utils.formatEther(balance);
 
-        }
-        catch (error)
-        {
-            if(error.data.code && error.data.code === -32603)
-            {
-                const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
 
-                if(contractError === "Note Already Minted")
+                let deploymentAddress = data.config.deploymentAddress;
+                let contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
+
+                let isContentOwned = await contract.isContentOwned(keyInput);
+                if(isContentOwned)
                 {
-                    setData({toastError: contractError});
+                    let noteContentString = await contract.getContentByKey(keyInput);
+
+                    if(typeof noteContentString === "string")
+                    {
+                        try
+                        {
+                            //If successfully retrieved note
+                            let noteContentObject = JSON.parse(noteContentString);
+                            setNoteOutput(noteContentObject);
+
+                            setKeyInput("");
+                            setComplete(true);
+                            setData({toastSuccess: "Retrieved Note"});
+                        }
+                        catch (error)
+                        {
+                            setData({toastError: "Error in Note format, " + error.message});
+                        }
+                    }
+                    else
+                    {
+                        setData({toastError: "Error:  " + noteContentString.toString()});
+                    }
                 }
                 else
                 {
-                    console.error(contractError);
-                    setData({toastError: error.data.message});
+                    setData({toastError: "Note does not exist"});
                 }
+
             }
-            else
+            catch (error)
             {
-                console.error(error);
-                setData({toastError: error.message});
+                if(error.data)
+                {
+                    if(error.data.code && error.data.code === -32603)
+                    {
+                        const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
+
+                        if(contractError === "Note Already Minted")
+                        {
+                            setData({toastError: contractError});
+                        }
+                        else
+                        {
+                            console.error(contractError);
+                            setData({toastError: error.data.message});
+                        }
+                    }
+                    else
+                    {
+                        setData({toastError: error.message});
+                    }
+                }
+                else
+                {
+                    setData({toastError: error.message});
+                }
+
             }
+
+            setDisabled(false);
+            setData({showSpinner: false});
+        }
+        else
+        {
+            setData({toastMessage: "Input key for note first note:"});
         }
 
-        setDisabled(false);
-        setData({showSpinner: false});
-        setComplete(true);
     }
 
 
@@ -121,8 +147,8 @@ export default function KeyInput(props)
 
             <AnimatedMount show={complete}>
                 <div className="alert bg-secondary">
-                    {"Complete"}
-                    {noteOutput}
+                    {"Complete "}
+                    {JSON.stringify(noteOutput)}
                 </div>
             </AnimatedMount>
 
