@@ -3,6 +3,8 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import {useData} from "../../utilities/DataContextProvider";
 
@@ -58,7 +60,7 @@ export default function StepImageSelect(props)
 
 
 
-    registerPlugin(FilePondPluginImagePreview, FilePondPluginFileEncode);
+    registerPlugin(FilePondPluginImagePreview, FilePondPluginFileEncode, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
 
     async function onAddFileComplete(error, file)
     {
@@ -122,9 +124,13 @@ export default function StepImageSelect(props)
                 credits={false}
                 allowFileEncode={true}
                 name="files"
+                allowFileSizeValidation={true}
+                maxFileSize={data.config.maxFileSizeKb + "KB"}
+                allowFileTypeValidation={true}
+                acceptedFileTypes={['image/png', 'image/jpeg']}
                 onaddfile={async (error, file) => await onAddFileComplete(error, file)}
                 onremovefile={async (error, file) => await onRemoveFile()}
-                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span> (JPEG or PNG, max size 10MB)'
             />
 
 
