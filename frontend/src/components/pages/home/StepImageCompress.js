@@ -51,7 +51,7 @@ export default function StepImageCompress(props)
     {
         try
         {
-            const options = {maxSizeMB: (data.config.maxFileSizeKb / 1024), maxWidthOrHeight: 1000, useWebWorker: true, onProgress: ((progress) => setProgressPercentage(progress))}
+            const options = {maxSizeMB: (data.config.maxCompressedFileSizeKb / 1024), maxWidthOrHeight: 1000, useWebWorker: true, onProgress: ((progress) => setProgressPercentage(progress))}
             const compressedFile = await imageCompression(imageFile, options);
 
             return compressedFile;
@@ -69,7 +69,7 @@ export default function StepImageCompress(props)
         const compressedImage = await compressImage(data.selectedFile.file);
         const imageUri = await imageCompression.getDataUrlFromFile(compressedImage);
         setData({compressedImage: compressedImage});
-        setData({imageDataUri: imageUri});
+        setData({compressedImageDataUri: imageUri});
         setData({filesizeKb: (compressedImage.size / 1024).toFixed(3)});
         setImageUri(imageUri);
 
@@ -120,7 +120,7 @@ export default function StepImageCompress(props)
 
                     <AnimatedMount show={imageUri !== ""}>
                         <div className={''}>
-                            {imageUri === "" ? <div> </div> : <a href={imageUri} download={"compressed_" + data.selectedFile.file.name}> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={imageUri} alt={"image"}/> </a> }
+                            {imageUri === "" ? <div> </div> : <a href={imageUri} download={"compressed_" + data.selectedFile.file.name}> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={data.compressedImageDataUri} alt={"image"}/> </a> }
                         </div>
                     </AnimatedMount>
 

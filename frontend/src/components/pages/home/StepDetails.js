@@ -35,7 +35,7 @@ export default function StepDetails(props)
             let filenameWithoutExtension = String(filenameArray);
             setName(filenameWithoutExtension.replace(/[^a-zA-Z0-9]/g,' '));
 
-            const predictedIpfsHash = await Hash.of(Uint8Array.from(data.compressedImage), {cidVersion: 1});
+            const predictedIpfsHash = await Hash.of(Uint8Array.from(data.selectedFile), {cidVersion: 1});
             setData({predictedIpfsHash: predictedIpfsHash});
 
         }

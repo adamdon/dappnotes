@@ -22,8 +22,8 @@ export default function DataContextProvider({children})
             toastMessage: "",
             toastSuccess: "",
             toastError: "",
-            metaNote: null,
             showSpinner: false,
+            metaNote: null,
             stepWizard: null,
             backendUrl: "null",
             testKey: "unloaded",
@@ -33,6 +33,7 @@ export default function DataContextProvider({children})
             predictedIpfsHash: "",
             filesizeKb: "0",
             imageDataUri: "",
+            compressedImageDataUri: "",
             name: "",
             ipfsHash: ""
         }

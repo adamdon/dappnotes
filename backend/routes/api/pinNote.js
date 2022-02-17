@@ -59,9 +59,9 @@ export default async function (request, response)
             return response.status(500).json({errors: [{message: "Server error"}]});
         }
 
-        if((decodedURI.dataBuffer.byteLength / 1024) > config.maxFileSizeKb)
+        if((decodedURI.dataBuffer.byteLength / 1024) > (config.maxFileSizeKb * 4))
         {
-            console.error("File Size Error: " + (decodedURI.dataBuffer.byteLength / 1024) + "KB is larger than max size of " + config.maxFileSizeKb + "KB");
+            console.error("File Size Error: " + (decodedURI.dataBuffer.byteLength / 1024) + "KB is larger than max size of " + (config.maxFileSizeKb * 4 ) + "KB");
             return response.status(500).json({errors: [{message: "Server error"}]});
         }
 
