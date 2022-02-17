@@ -6,12 +6,15 @@
   "scripts": {
     "run-node-compile-deploy": "concurrently \"npm run run-node\" \"npm run compile-deploy\"",
     "run-node": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat node",
-    "compile-deploy": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network localhost"
+    "compile-deploy": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network localhost",
+    "compile-deploy-ropsten": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network ropsten",
+    "compile-deploy-rinkeby": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network rinkeby"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "concurrently": "^6.5.1",
+    "dotenv": "^16.0.0",
     "hardhat": "^2.8.3"
   },
   "devDependencies": {

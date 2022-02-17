@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="compile-deploy-ropsten" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/blockchain/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="compile-deploy-ropsten" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

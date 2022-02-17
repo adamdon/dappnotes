@@ -54,7 +54,7 @@ export default function StepTransaction(props)
                 const connection = contract.connect(signer);
                 const connectionAddress = connection.address;
                 //const result = await contract.payToMint(connectionAddress, JSON.stringify(data.metaNote), {value: ethers.utils.parseEther('0.05'),});
-                const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.note), {value: ethers.utils.parseEther('0.05'),});
+                const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.note), {value: ethers.utils.parseEther('0.001'),});
                 await result.wait();
                 console.log(result);
                 setIsComplete(true);

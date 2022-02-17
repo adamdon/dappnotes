@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+require('dotenv').config({ path: '../.env' })
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -9,6 +10,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
     console.log(account.address);
   }
 });
+
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
@@ -21,4 +23,14 @@ module.exports = {
   paths: {
     artifacts: './src/artifacts',
   },
+  networks: {
+    ropsten: {
+      url: process.env.ALCHEMY_ROPSTEN_KEY,
+      accounts: [process.env.ROPSTEN_PRIVATE_KEY]
+    },
+    rinkeby: {
+      url: process.env.ALCHEMY_RINKEBY_KEY,
+      accounts: [process.env.RINKEBY_PRIVATE_KEY]
+    }
+  }
 };
