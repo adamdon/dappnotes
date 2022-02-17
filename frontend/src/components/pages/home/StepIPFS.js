@@ -55,9 +55,19 @@ export default function StepIPFS(props)
                     // const metaResponse = await fetch("https://gateway.pinata.cloud/ipfs/" + jsonData.result.IpfsHash, {method: "GET", headers: requestHeaders});
                     // const metaJsonData = await metaResponse.json();
 
+                    let note = {};
+                    note.name = jsonData.note.name;
+                    note.imageIpfsHash = jsonData.note.imageIpfsHash;
+                    note.imageUri = data.compressedImageDataUri;
+
 
                     setData({ipfsHash: jsonData.note.imageIpfsHash})
                     setData({metaNote: jsonData.note})
+                    setData({note: note})
+
+
+
+
                     setData({toastSuccess: "Published: " + jsonData.note.imageIpfsHash});
                     setIsComplete(true);
                     setDisabled(true);

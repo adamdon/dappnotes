@@ -23,7 +23,6 @@ export default function DataContextProvider({children})
             toastSuccess: "",
             toastError: "",
             showSpinner: false,
-            metaNote: null,
             stepWizard: null,
             backendUrl: "null",
             testKey: "unloaded",
@@ -35,7 +34,9 @@ export default function DataContextProvider({children})
             imageDataUri: "",
             compressedImageDataUri: "",
             name: "",
-            ipfsHash: ""
+            ipfsHash: "",
+            metaNote: {},
+            note: {},
         }
         return data;
     });

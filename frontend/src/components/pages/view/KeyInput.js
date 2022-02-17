@@ -67,6 +67,7 @@ export default function KeyInput(props)
 
                             //successfully retrieved note
                             setNoteOutput(noteContentObject);
+                            console.log(noteContentObject);
 
                             setKeyInput("");
                             setComplete(true);
@@ -159,7 +160,7 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>
+                                    <a href={noteOutput.imageUri} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={noteOutput.imageUri} alt={"image"}/> </a>
                                 </td>
                             </tr>
                             <tr className="table-active">
