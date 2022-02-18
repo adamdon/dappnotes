@@ -130,7 +130,7 @@ export default function StepImageSelect(props)
                 acceptedFileTypes={['image/png', 'image/jpeg']}
                 onaddfile={async (error, file) => await onAddFileComplete(error, file)}
                 onremovefile={async (error, file) => await onRemoveFile()}
-                labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span> (JPEG or PNG, max size 10MB)'
+                labelIdle='Drag & Drop your image (JPEG or PNG, max size 10MB) or <span class="filepond--label-action">Browse</span>'
             />
 
 

@@ -66,15 +66,35 @@ export default function StepImageCompress(props)
     async function startOnClick()
     {
         setShow(true); //shows loading bar
+
         const compressedImage = await compressImage(data.selectedFile.file);
         const imageUri = await imageCompression.getDataUrlFromFile(compressedImage);
-        setData({compressedImage: compressedImage});
-        setData({compressedImageDataUri: imageUri});
-        setData({filesizeKb: (compressedImage.size / 1024).toFixed(3)});
-        setImageUri(imageUri);
 
-        setData({toastSuccess: "Image compressed from " + (data.selectedFile.file.size / 1024).toFixed(3) + "KB to " + (compressedImage.size / 1024).toFixed(3) + "KB" });
+        const originalSize = (data.selectedFile.file.size / 1024).toFixed(3);
+        const compressedSize = (compressedImage.size / 1024).toFixed(3);
+
+
+        if(compressedSize < originalSize)
+        {
+            setData({compressedImage: compressedImage});
+            setData({compressedImageDataUri: imageUri});
+            setData({filesizeKb: compressedSize});
+            setImageUri(imageUri);
+
+            setData({toastSuccess: "Image compressed from " + originalSize+ "KB to " + compressedSize + "KB" });
+        }
+        else
+        {
+            setData({compressedImage: compressedImage});
+            setData({compressedImageDataUri: data.imageDataUri});
+            setData({filesizeKb: originalSize});
+            setImageUri(data.imageDataUri);
+
+            // setData({toastSuccess: "Image compressed from " + originalSize+ "KB to " + compressedSize + "KB" });
+            setData({toastSuccess: "Image cannot be compressed further, original will be used for blockchain"});
+        }
         setIsComplete(true);
+
     }
 
 
