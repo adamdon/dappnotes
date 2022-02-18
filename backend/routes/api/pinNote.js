@@ -80,17 +80,17 @@ export default async function (request, response)
 
 
             //meta data pinning
-            meta = {name: name, imageIpfsHash: imageResult.IpfsHash, imageUri: "NOT_SET"};
-            metaReadStream = Readable.from(JSON.stringify(meta));
-            metaReadStream.path = (name + ".json"); //set filename
-            metaResult = await pinata.pinFileToIPFS(metaReadStream, {pinataMetadata: {name: ("META: " + name)}, pinataOptions: {cidVersion: 1}});
-            if(metaResult.IpfsHash)
+            // metaReadStream = Readable.from(JSON.stringify(meta));
+            // metaReadStream.path = (name + ".json"); //set filename
+            // metaResult = await pinata.pinFileToIPFS(metaReadStream, {pinataMetadata: {name: ("META: " + name)}, pinataOptions: {cidVersion: 1}});
+
+            if(imageResult.IpfsHash)
             {
-                meta.metaIpfsHash = metaResult.IpfsHash;
+                meta = {name: name, imageIpfsHash: imageResult.IpfsHash, imageUri: "NOT_SET"};
             }
             else
             {
-                console.error("IPFS Meta Error: " + metaResult);
+                console.error("IPFS pinning Error: " + metaResult);
                 return response.status(500).json({errors: [{message: "Server error"}]});
             }
         }
