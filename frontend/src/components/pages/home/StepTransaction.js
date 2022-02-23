@@ -55,8 +55,30 @@ export default function StepTransaction(props)
                 const connectionAddress = connection.address;
                 //const result = await contract.payToMint(connectionAddress, JSON.stringify(data.metaNote), {value: ethers.utils.parseEther('0.05'),});
                 const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.note), {value: ethers.utils.parseEther('0.001'),});
-                await result.wait();
+                const receipt = await result.wait();
+                // console.log('total ether spent on gas for transaction: \t', ethers.utils.formatEther(result.cumulativeGasUsed.mul(result.effectiveGasPrice)))
+
+
+
                 console.log(result);
+                console.log(receipt);
+
+                const event = receipt.events.find(event => event.event === 'Transfer');
+                const [from, to, value] = event.args;
+                const gasUsed = (receipt.cumulativeGasUsed) * (receipt.effectiveGasPrice);
+
+                console.log(from, to, value);
+                console.log(gasUsed);
+                console.log(typeof gasUsed);
+                console.log(value);
+                console.log(typeof value);
+                console.log(ethers.utils.formatEther(value));
+
+                const gasUsedBigNumber = ethers.BigNumber.from(gasUsed.toString());
+                console.log(ethers.utils.formatEther(gasUsedBigNumber));
+
+
+
                 setIsComplete(true);
             }
             else
@@ -67,18 +89,26 @@ export default function StepTransaction(props)
         }
         catch (error)
         {
-            if(error.data.code && error.data.code === -32603)
+            if(error.data)
             {
-                const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
-
-                if(contractError === "Note Already Minted")
+                if(error.data.code && error.data.code === -32603)
                 {
-                    setData({toastError: contractError});
+                    const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
+
+                    if(contractError === "Note Already Minted")
+                    {
+                        setData({toastError: contractError});
+                    }
+                    else
+                    {
+                        console.error(contractError);
+                        setData({toastError: error.data.message});
+                    }
                 }
                 else
                 {
-                    console.error(contractError);
-                    setData({toastError: error.data.message});
+                    console.error(error);
+                    setData({toastError: error.message});
                 }
             }
             else
