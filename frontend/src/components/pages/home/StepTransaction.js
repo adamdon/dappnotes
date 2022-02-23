@@ -12,6 +12,12 @@ export default function StepTransaction(props)
     const [data, setData] = useData();
     const [isComplete, setIsComplete] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [gasCostEth, setGasCostEth] = useState("");
+    const [feeCostEth, setFeeCostEth] = useState("");
+    const [totalCostEth, setTotalCostEth] = useState("");
+    const [gasCostUsd, setGasCostUsd] = useState("");
+    const [feeCostUsd, setFeeCostUsd] = useState("");
+    const [totalCostUsd, setTotalCostUsd] = useState("");
 
 
 
@@ -53,37 +59,60 @@ export default function StepTransaction(props)
             {
                 const connection = contract.connect(signer);
                 const connectionAddress = connection.address;
-                //const result = await contract.payToMint(connectionAddress, JSON.stringify(data.metaNote), {value: ethers.utils.parseEther('0.05'),});
+
                 const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.note), {value: ethers.utils.parseEther('0.001'),});
                 const receipt = await result.wait();
-                // console.log('total ether spent on gas for transaction: \t', ethers.utils.formatEther(result.cumulativeGasUsed.mul(result.effectiveGasPrice)))
 
 
 
-                console.log(result);
-                console.log(receipt);
-
-                const event = receipt.events.find(event => event.event === 'Transfer');
-                const [from, to, value] = event.args;
                 const gasUsed = (receipt.cumulativeGasUsed) * (receipt.effectiveGasPrice);
-
-                console.log(from, to, value);
-                console.log(gasUsed);
-                console.log(typeof gasUsed);
-                console.log(value);
-                console.log(typeof value);
-                console.log(ethers.utils.formatEther(value));
-
                 const gasUsedBigNumber = ethers.BigNumber.from(gasUsed.toString());
-                console.log(ethers.utils.formatEther(gasUsedBigNumber));
+                const gasUsedEther = ethers.utils.formatEther(gasUsedBigNumber);
+                const value = result.value;
+                const valueEther = ethers.utils.formatEther(value);
+                const totalCostNumber = Number(gasUsedEther) + Number(valueEther);
+
+                setGasCostEth(gasUsedEther);
+                setFeeCostEth(valueEther);
+                setTotalCostEth(String(totalCostNumber));
+
+                try
+                {
+                    const requestUrl = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
+                    const response = await fetch(requestUrl, {method: "GET", headers: {"Content-Type": "application/json"},});
+                    const jsonData = await response.json();
+
+                    if(jsonData.ethereum.usd)
+                    {
+                        let ethUsdCost = Number(jsonData.ethereum.usd);
+                        let prefixText = "(USD $"
+
+                        let currentGasCostUsd = (ethUsdCost * gasUsedEther);
+                        let currentFeeCostUsd = (ethUsdCost * valueEther);
+                        let currentTotalCostUsd = (Number(ethUsdCost) * (Number(gasUsedEther) + Number(valueEther)));
+
+                        setGasCostUsd(prefixText + String(currentGasCostUsd.toFixed(2)) + ")");
+                        setFeeCostUsd(prefixText + String(currentFeeCostUsd.toFixed(2)) + ")");
+                        setTotalCostUsd(prefixText + String(currentTotalCostUsd.toFixed(2)) + ")");
+                    }
+                    else
+                    {
+                        setData({toastError: "Could not load ETH/USD conversion rate. Error: " + JSON.stringify(jsonData)});
+                    }
+                }
+                catch (error)
+                {
+                    console.error(error);
+                    setData({toastError: "Could not load ETH/USD conversion rate. Error: " + error.message});
+                }
 
 
 
+                setDisabled(true);
                 setIsComplete(true);
             }
             else
             {
-                // console.log("error");
                 setData({toastError: "Content Already Minted"});
             }
         }
@@ -162,7 +191,7 @@ export default function StepTransaction(props)
 
 
             <AnimatedMount show={isComplete}>
-                <div className={'text-center'}><h4 className="display-16">Note Successfully Minted On Blockchain</h4></div>
+                {/*<div className={'text-center'}><h4 className="display-16">Note Successfully Minted On Blockchain</h4></div>*/}
                 <div className="my-3 text-center">
                     <div className="d-grid gap-2" role="group" aria-label="Submit">
                         <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
@@ -171,13 +200,63 @@ export default function StepTransaction(props)
                     </div>
                 </div>
 
-                <div className="mt-3 text-center">
-                    <div className="d-grid gap-2" role="group" aria-label="Submit">
-                        <div className="btn-group" role="group">
-                            <button onClick={copyLinkOnClick} type="button" className="btn btn-success"><i className="fa fa-clipboard"></i> Copy Note Link</button>
-                        </div>
-                    </div>
+
+
+
+
+
+                <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
+                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                        <thead>
+                            <tr className="table-active">
+                                <th className="text-center text-light" colSpan={2}>Successful Transaction Details</th>
+                            </tr>
+                        </thead>
+                        <tbody className="">
+
+                            <tr className="table-active">
+                                <td className="text-end text-light px-3">Gas Cost <i className="fa fa-car"></i> :</td>
+                                <td className="text-start text-light px-3">{`ETH ${Number(gasCostEth).toFixed(4)} ${gasCostUsd}`}</td>
+                            </tr>
+
+                            <tr className="table-active">
+                                <td className="text-end text-light px-3">Fee Cost <i className="fa fa-ticket"></i> :</td>
+                                <td className="text-start text-light px-3">{`ETH ${Number(feeCostEth).toFixed(4)} ${feeCostUsd}`}</td>
+                            </tr>
+
+                            <tr className="table-active">
+                                <td className="text-end text-light px-3">Total Cost <i className="fa fa-flag-checkered"></i> :</td>
+                                <td className="text-start  text-light font-weight-bold px-3">{`ETH ${Number(totalCostEth).toFixed(4)} ${totalCostUsd}`}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                {/*<div className="mt-3 text-center">*/}
+                {/*    <div className="d-grid gap-2" role="group" aria-label="Submit">*/}
+                {/*        <div className="btn-group" role="group">*/}
+                {/*            <button onClick={copyLinkOnClick} type="button" className="btn btn-success"><i className="fa fa-clipboard"></i> Copy Note Link</button>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
 
             </AnimatedMount>
 
