@@ -14,6 +14,7 @@ export default function KeyInput(props)
 
     const [keyInput, setKeyInput] = useState("");
     const [noteOutput, setNoteOutput] = useState("");
+    const [cloudImageIpfsHash, setCloudImageIpfsHash] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [complete, setComplete] = useState(false);
 
@@ -61,21 +62,46 @@ export default function KeyInput(props)
 
                     if(typeof noteContentString === "string")
                     {
+                        let noteContentObject;
+
                         try
                         {
-                            let noteContentObject = JSON.parse(noteContentString);
-
-                            //successfully retrieved note
-                            setNoteOutput(noteContentObject);
-                            console.log(noteContentObject);
-
-                            setKeyInput("");
-                            setComplete(true);
-                            setData({toastSuccess: "Retrieved Note"});
+                            noteContentObject = JSON.parse(noteContentString);
                         }
                         catch (error)
                         {
                             setData({toastError: "Error in Note format, " + error.message});
+                        }
+
+                        if(noteContentObject.imageIpfsHash)
+                        {
+
+                            try
+                            {
+                                //requesting cloud data
+                                const requestBody = {imageIpfsHash: noteContentObject.imageIpfsHash};
+                                const requestUrl = (data.backendUrl + "downloadNote/");
+                                const response = await fetch(requestUrl, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(requestBody)});
+                                const jsonData = await response.json();
+                                setCloudImageIpfsHash(jsonData.imageUri);
+                            }
+                            catch (error)
+                            {
+                                setData({toastError: "Error could not load cloud data, " + error.message});
+                            }
+
+
+
+                            //note loaded from blockchain
+                            console.log(noteContentObject);
+                            setNoteOutput(noteContentObject);
+                            setKeyInput("");
+                            setComplete(true);
+                            setData({toastSuccess: "Retrieved Note"});
+                        }
+                        else
+                        {
+                            setData({toastError: "Note missing data"});
                         }
                     }
                     else
@@ -173,7 +199,7 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>
+                                    <a href={cloudImageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={cloudImageIpfsHash} alt={"image"}/> </a>
                                 </td>
                             </tr>
 
