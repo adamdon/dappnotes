@@ -3,6 +3,7 @@ import {useData} from "../../utilities/DataContextProvider";
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
 import AnimatedMount from "../../utilities/AnimatedMount";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 
 
@@ -12,6 +13,10 @@ export default function StepTransaction(props)
     const [data, setData] = useData();
     const [isComplete, setIsComplete] = useState(false);
     const [disabled, setDisabled] = useState(false);
+
+    const [showProgressBar, setShowProgress] = useState(false);
+    const [progressPercentage, setProgressPercentage] = useState(0);
+
     const [gasCostEth, setGasCostEth] = useState("");
     const [feeCostEth, setFeeCostEth] = useState("");
     const [totalCostEth, setTotalCostEth] = useState("");
@@ -30,11 +35,16 @@ export default function StepTransaction(props)
 
 
 
+
+
     async function performTransaction()
     {
         try
         {
-            setData({toastMessage: "Test transaction"});
+            setData({toastMessage: "Transaction starting"});
+            setDisabled(true);
+            setShowProgress(true);
+            setProgressPercentage(10);
             // let detectProvider = await detectEthereumProvider()
 
 
@@ -53,15 +63,19 @@ export default function StepTransaction(props)
 
             let deploymentAddress = data.config.deploymentAddress;
             let contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
+            setProgressPercentage(15);
 
             let isContentOwned = await contract.isContentOwned(data.ipfsHash);
+            setProgressPercentage(25);
             if(!isContentOwned)
             {
                 const connection = contract.connect(signer);
                 const connectionAddress = connection.address;
+                setProgressPercentage(35);
 
                 const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.note), {value: ethers.utils.parseEther('0.001'),});
                 const receipt = await result.wait();
+                setProgressPercentage(60);
 
 
 
@@ -81,6 +95,7 @@ export default function StepTransaction(props)
                     const requestUrl = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
                     const response = await fetch(requestUrl, {method: "GET", headers: {"Content-Type": "application/json"},});
                     const jsonData = await response.json();
+                    setProgressPercentage(80);
 
                     if(jsonData.ethereum.usd)
                     {
@@ -107,8 +122,7 @@ export default function StepTransaction(props)
                 }
 
 
-
-                setDisabled(true);
+                setProgressPercentage(100);
                 setIsComplete(true);
             }
             else
@@ -181,24 +195,27 @@ export default function StepTransaction(props)
 
 
 
-            <div className="my-3 text-center">
-                <div className="d-grid gap-2" role="group" aria-label="Submit">
-                    <button onClick={performTransaction} disabled={disabled} type="button" className="btn btn-dark">
-                        <span><i className="fa fa-plug"></i> Perform Transaction</span>
-                    </button>
+            <div className={!showProgressBar ? "visible" : "d-none"} >
+                <div className="my-3 text-center" >
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <button onClick={performTransaction} disabled={disabled} type="button" className="btn btn-dark">
+                            <span><i className="fa fa-plug"></i> Perform Transaction</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
 
+
+            <div className={" m-0"}>
+                <ProgressBar className={showProgressBar ? "visible" : "invisible"} completed={progressPercentage} bgColor={"green"} baseBgColor={'#3a4b6d'} borderRadius={'5px'}/>
+            </div>
+
+
+
             <AnimatedMount show={isComplete}>
                 {/*<div className={'text-center'}><h4 className="display-16">Note Successfully Minted On Blockchain</h4></div>*/}
-                <div className="my-3 text-center">
-                    <div className="d-grid gap-2" role="group" aria-label="Submit">
-                        <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
-                            <span><i className="fa fa-external-link"></i> View Note Content</span>
-                        </a>
-                    </div>
-                </div>
+
 
 
 
@@ -236,7 +253,13 @@ export default function StepTransaction(props)
 
 
 
-
+                <div className="my-3 text-center">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                            <span><i className="fa fa-external-link"></i> View Note Content</span>
+                        </a>
+                    </div>
+                </div>
 
 
 
