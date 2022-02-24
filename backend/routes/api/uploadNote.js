@@ -11,10 +11,11 @@ export default async function (request, response)
     {
         let note = request.body.note;
         let name = request.body.note.name;
-        let dataUri = request.body.note.dataUri;
+        let imageIpfsHash = request.body.note.imageIpfsHash;
+        let imageUri = request.body.note.imageUri;
 
 
-        if((typeof note == "undefined") || (typeof name == "undefined") || (typeof dataUri == "undefined"))
+        if((typeof note == "undefined") || (typeof name == "undefined") || (typeof imageIpfsHash == "undefined") || (typeof imageUri == "undefined"))
         {
             return response.status(400).json({errors: [{message: "Missing data"}] });
         }
@@ -25,20 +26,31 @@ export default async function (request, response)
             return response.status(400).json({errors: [{message: "name is required"}] });
         }
 
-        if (dataUri === "")
+        if (imageIpfsHash === "")
         {
-            return response.status(400).json({errors: [{message: "dataUri is required"}] });
+            return response.status(400).json({errors: [{message: "imageIpfsHash is required"}] });
         }
 
-        if (!validDataUri(dataUri))
+        if (imageUri === "")
         {
-            return response.status(400).json({errors: [{message: "dataUri not valid"}] });
+            return response.status(400).json({errors: [{message: "imageIpfsHash is required"}] });
         }
 
-        let newNote = new Note({dataUri: note.dataUri, name: note.name});
+        // if (!validDataUri(imageUri))
+        // {
+        //     return response.status(400).json({errors: [{message: "dataUri not valid"}] });
+        // }
+
+        let foundNote = await Note.findOne({imageIpfsHash: request.body.note.imageIpfsHash});
+        if (foundNote)
+        {
+            return response.status(200).json({message: "Already uploaded", note: foundNote});
+        }
+
+        let newNote = new Note({name: note.name, imageIpfsHash: note.imageIpfsHash, imageUri: note.imageUri});
         await newNote.save();
 
-        return response.status(200).json({message: "Data uploaded", note: newNote});
+        return response.status(200).json({message: "Note uploaded", note: newNote});
     }
     catch (error)
     {

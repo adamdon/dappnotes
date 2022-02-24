@@ -28,7 +28,7 @@ if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
 
 
 // //Connecting to database using process.env.MONGO_URI environment variables
-// await database.connect();
+await database.connect();
 
 
 //morgan logging config

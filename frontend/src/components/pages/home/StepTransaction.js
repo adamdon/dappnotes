@@ -47,6 +47,11 @@ export default function StepTransaction(props)
             setProgressPercentage(10);
             // let detectProvider = await detectEthereumProvider()
 
+            console.log("data.note");
+            console.log(data.note);
+            console.log(JSON.stringify(data.note));
+            console.log("data.note");
+
 
             let providerOptions = {};
             let web3Modal = new Web3Modal({providerOptions});

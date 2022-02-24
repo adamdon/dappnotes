@@ -7,21 +7,21 @@ import mongoose from "mongoose";
 const NoteSchema = new mongoose.Schema
 (
     {
-        dataUri:
-            {
-                type: String,
-                required: true,
-            },
         name:
             {
                 type: String,
                 required: true,
                 default: "null",
             },
-        date:
+        imageIpfsHash:
             {
-                type: Date,
-                default: Date.now,
+                type: String,
+                required: true,
+            },
+        imageUri:
+            {
+                type: String,
+                required: true,
             },
     }
 );

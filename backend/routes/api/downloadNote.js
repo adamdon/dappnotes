@@ -9,32 +9,27 @@ export default async function (request, response)
 {
     try
     {
-        let _id = request.body._id;
+        let imageIpfsHash = request.body.imageIpfsHash;
 
 
         //Check field is there
-        if((typeof _id == "undefined"))
+        if((typeof imageIpfsHash == "undefined"))
         {
             return response.status(400).json({errors: [{message: "Missing data"}] });
         }
 
         // Check that data is not null
-        if (validator.isEmpty(_id))
+        if (imageIpfsHash === "")
         {
-            return response.status(400).json({errors: [{message: "_id is required"}] });
+            return response.status(400).json({errors: [{message: "imageIpfsHash is required"}] });
         }
 
-        //check that ID is valid
-        if (!mongoose.Types.ObjectId.isValid(_id))
-        {
-            return response.status(400).json({errors: [{message: "_id not valid"}] });
-        }
 
         //Check for note in database
-        let foundNote = await Note.findOne({_id: _id});
+        let foundNote = await Note.findOne({imageIpfsHash: request.body.imageIpfsHash});
         if (!foundNote)
         {
-            return response.status(400).json({errors: [{msg: "Note not found"}]});
+            return response.status(400).json({errors: [{message: "Note not found"}]});
         }
 
         return response.status(200).json(foundNote);
