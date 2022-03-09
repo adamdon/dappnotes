@@ -12,6 +12,7 @@ export default function StepTransaction(props)
 {
     const [data, setData] = useData();
     const [isComplete, setIsComplete] = useState(false);
+    const [isAlreadyMinted, setIsAlreadyMinted] = useState(false);
     const [disabled, setDisabled] = useState(false);
 
     const [showProgressBar, setShowProgress] = useState(false);
@@ -133,6 +134,8 @@ export default function StepTransaction(props)
             else
             {
                 setData({toastError: "Content Already Minted"});
+                setProgressPercentage(100);
+                setIsAlreadyMinted(true);
             }
         }
         catch (error)
@@ -219,13 +222,6 @@ export default function StepTransaction(props)
 
 
             <AnimatedMount show={isComplete}>
-                {/*<div className={'text-center'}><h4 className="display-16">Note Successfully Minted On Blockchain</h4></div>*/}
-
-
-
-
-
-
 
                 <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
                     <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
@@ -256,8 +252,6 @@ export default function StepTransaction(props)
                 </div>
 
 
-
-
                 <div className="my-3 text-center">
                     <div className="d-grid gap-2" role="group" aria-label="Submit">
                         <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
@@ -266,26 +260,17 @@ export default function StepTransaction(props)
                     </div>
                 </div>
 
+            </AnimatedMount>
 
 
-
-
-
-
-
-
-
-
-
-
-                {/*<div className="mt-3 text-center">*/}
-                {/*    <div className="d-grid gap-2" role="group" aria-label="Submit">*/}
-                {/*        <div className="btn-group" role="group">*/}
-                {/*            <button onClick={copyLinkOnClick} type="button" className="btn btn-success"><i className="fa fa-clipboard"></i> Copy Note Link</button>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
+            <AnimatedMount show={isAlreadyMinted}>
+                <div className="my-3 text-center">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                            <span><i className="fa fa-external-link"></i> View Note Content</span>
+                        </a>
+                    </div>
+                </div>
             </AnimatedMount>
 
 
