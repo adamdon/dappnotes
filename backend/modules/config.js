@@ -12,6 +12,7 @@ const deploymentJson = JSON.parse(deploymentFile);
 
 export default
 {
+    debugMode: false,
     maxFileSizeKb: 10000,
     maxCompressedFileSizeKb: 20,
     alchemyRopstenKey: process.env.ALCHEMY_ROPSTEN_KEY,

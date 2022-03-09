@@ -1,4 +1,5 @@
 import React from "react";
+import {useData} from "../../utilities/DataContextProvider";
 
 
 
@@ -6,7 +7,15 @@ import React from "react";
 export default function WizardNav(props)
 {
 
+    const [data, setData] = useData();
 
+    function dotOnClick(value)
+    {
+        if(data.config.debugMode)
+        {
+            props.goToStep(value + 1);
+        }
+    }
 
 
     return (
@@ -15,13 +24,13 @@ export default function WizardNav(props)
 
                 <div className={'text-center'}>
                     {Array.from(Array(props.totalSteps).keys()).map((value, key) => (
-                        <span
+                        <a
                             key={key}
-                            className={`${"dot"} ${(props.currentStep === (value + 1)) ? "active" : (props.currentStep > (value + 1)) ? "complete" :''}`}
-                            onClick={() => props.goToStep((value + 1))}
+                            className={`${"dot text-decoration-none"} ${(props.currentStep === (value + 1)) ? "active" : (props.currentStep > (value + 1)) ? "complete" :''}`}
+                            onClick={() => dotOnClick(value)}
                         >
                         &bull;
-                    </span>
+                    </a>
                     ))}
                 </div>
 
