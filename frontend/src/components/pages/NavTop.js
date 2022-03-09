@@ -35,10 +35,10 @@ export default function NavTop()
                         <Link to="/" className="dropdown-item text-center">Home</Link>
                     </li>
                     <li>
-                        <Link to="/view" className="dropdown-item text-center">View</Link>
+                        <Link to="/view" className="dropdown-item text-center">View Note</Link>
                     </li>
                     <li>
-                        <Link to="/test" className="dropdown-item text-center">Test</Link>
+                        <Link to="/Admin" className="dropdown-item text-center">Admin</Link>
                     </li>
                 </ul>
             </div>
