@@ -3,6 +3,7 @@ import "@popperjs/core";
 import 'bootstrap';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'font-awesome/css/font-awesome.min.css';
+import 'react-image-lightbox/style.css';
 import "./styles/colors.css";
 import "./styles/main.css";
 import React, {useEffect, useState} from "react"

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import Hash from "ipfs-only-hash";
-import AnimatedMount from "../../utilities/AnimatedMount";
-import {useData} from "../../utilities/DataContextProvider";
+import Lightbox from 'react-image-lightbox';
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
+import AnimatedMount from "../../utilities/AnimatedMount";
+import {useData} from "../../utilities/DataContextProvider";
+
 
 
 
@@ -14,9 +15,14 @@ export default function KeyInput(props)
 
     const [keyInput, setKeyInput] = useState("");
     const [noteOutput, setNoteOutput] = useState("");
-    const [cloudImageIpfsHash, setCloudImageIpfsHash] = useState("");
+    const [cloudImageUri, setCloudImageUri] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [complete, setComplete] = useState(false);
+
+    const [showBlockchainBox, setShowBlockchainBox] = useState(false);
+    const [showIpfsBox, setShowIpfsBox] = useState(false);
+    const [showCloudBox, setShowCloudBox] = useState(false);
+
 
 
 
@@ -83,7 +89,7 @@ export default function KeyInput(props)
                                 const requestUrl = (data.backendUrl + "downloadNote/");
                                 const response = await fetch(requestUrl, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(requestBody)});
                                 const jsonData = await response.json();
-                                setCloudImageIpfsHash(jsonData.imageUri);
+                                setCloudImageUri(jsonData.imageUri);
                             }
                             catch (error)
                             {
@@ -156,6 +162,10 @@ export default function KeyInput(props)
     }
 
 
+
+
+
+
     return (
         <div>
             <div className="alert bg-secondary">
@@ -186,20 +196,20 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <a href={noteOutput.imageUri} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={noteOutput.imageUri} alt={"image"}/> </a>
+                                    <img className={'img-fluid rounded'} src={noteOutput.imageUri} onClick={() => setShowBlockchainBox(true)} style={{maxHeight: 200}}  alt={"image"}/>
                                 </td>
                             </tr>
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>
+                                    <img className={'img-fluid rounded'} onClick={() => setShowIpfsBox(true)}  style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/>
                                 </td>
                             </tr>
 
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <a href={cloudImageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={cloudImageIpfsHash} alt={"image"}/> </a>
+                                    <img className={'img-fluid rounded'} onClick={() => setShowCloudBox(true)}  style={{maxHeight: 200}} src={cloudImageUri} alt={"image"}/>
                                 </td>
                             </tr>
 
@@ -207,10 +217,36 @@ export default function KeyInput(props)
                     </table>
                 </div>
 
-                {/*<div className="alert bg-secondary text-center">*/}
-                {/*    <a href={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} target="_blank"> <img className={'img-fluid rounded'} style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/> </a>*/}
-                {/*</div>*/}
+                {showBlockchainBox ?
+                    <Lightbox
+                        mainSrc={noteOutput.imageUri}
+                        onCloseRequest={() => setShowBlockchainBox(false)}
+                        imageTitle={"Blockchain Stored Image"}
+                    />
+                    : <></>
+                }
+                {showIpfsBox ?
+                    <Lightbox
+                        mainSrc={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash}
+                        onCloseRequest={() => setShowIpfsBox(false)}
+                        imageTitle={"IPFS Stored Image"}
+                    />
+                    : <></>
+                }
+                {showCloudBox ?
+                    <Lightbox
+                        mainSrc={cloudImageUri}
+                        onCloseRequest={() => setShowCloudBox(false)}
+                        imageTitle={"Cloud Stored image"}
+                    />
+                    : <></>
+                }
             </AnimatedMount>
+
+
+
+
+
 
         </div>
 
