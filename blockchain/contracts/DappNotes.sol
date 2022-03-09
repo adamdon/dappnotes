@@ -12,10 +12,16 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
+//    address public owner;
     mapping(string => uint8) public existingURIs;
     mapping(string => string) public storedNotes;
 
-    constructor() ERC721("DappNotes", "DAP") {}
+    constructor() ERC721("DappNotes", "DAP")
+    {
+//        owner = msg.sender;
+    }
+
+
 
 
     function _baseURI() internal pure override returns (string memory)
@@ -47,6 +53,14 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
 
 
 
+    function withdraw() public
+    {
+        console.log("withdraw");
+        console.log(owner());
+        console.log(address(this).balance);
+        payable(owner()).transfer(address(this).balance);
+        console.log("withdraw");
+    }
 
 
 
@@ -86,6 +100,8 @@ contract DappNotes is ERC721, ERC721URIStorage, Ownable
 
         return newItemId;
     }
+
+
 
 
 }
