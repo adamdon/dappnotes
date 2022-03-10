@@ -16,6 +16,8 @@ export default function KeyInput(props)
     const [keyInput, setKeyInput] = useState("");
     const [noteOutput, setNoteOutput] = useState("");
     const [cloudImageUri, setCloudImageUri] = useState("");
+    const [ipfsImageUri, setIpfsImageUri] = useState("");
+
     const [disabled, setDisabled] = useState(false);
     const [complete, setComplete] = useState(false);
 
@@ -37,47 +39,87 @@ export default function KeyInput(props)
 
     async function requestNoteOnClick()
     {
-        const currentNetwork = data.config.networkName;
-
-        if(currentNetwork === "localhost")
-        {
-            console.log("Requesting note from localhost network")
-            let web3Modal = new Web3Modal({});
-            let instance = await web3Modal.connect();
-            let provider = new ethers.providers.Web3Provider(instance);
-            await requestNote(provider);
-        }
-        else if(currentNetwork === "rinkeby")
-        {
-            console.log("Requesting note from rinkeby network")
-            const provider = new ethers.providers.AlchemyProvider("rinkeby", data.config.alchemyRinkebyKey);
-            await requestNote(provider);
-        }
-        else
-        {
-            setData({toastError: "Unknown network config: " + currentNetwork})
-        }
-    }
-
-
-    async function requestNote(provider)
-    {
         if(keyInput !== "" && keyInput !== " ")
         {
             setDisabled(true);
             setData({showSpinner: true});
 
+            await requestIpfsNote();
+            await requestCloudNote();
+            await requestBlockchainNote();
+
+
+            setDisabled(false);
+            setData({showSpinner: false});
+        }
+        else
+        {
+            setData({toastMessage: "Input key for note first note:"});
+        }
+
+
+    }
+
+
+
+
+    async function requestIpfsNote()
+    {
+        setIpfsImageUri("https://gateway.pinata.cloud/ipfs/" + keyInput)
+    }
+
+    async function requestCloudNote()
+    {
+        try
+        {
+            //requesting cloud data
+            const requestBody = {imageIpfsHash: keyInput};
+            const requestUrl = (data.backendUrl + "downloadNote/");
+            const response = await fetch(requestUrl, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(requestBody)});
+            const jsonData = await response.json();
+            setCloudImageUri(jsonData.imageUri);
+        }
+        catch (error)
+        {
+            setData({toastError: "Error could not load cloud data, " + error.message});
+        }
+    }
+
+
+    async function requestBlockchainNote()
+    {
+
+        let provider = null;
+        let currentNetwork = data.config.networkName;
+        if(currentNetwork === "localhost")
+        {
+            console.log("Requesting note from localhost network")
+            let web3Modal = new Web3Modal({});
+            let instance = await web3Modal.connect();
+            provider = new ethers.providers.Web3Provider(instance);
+        }
+        else if(currentNetwork === "rinkeby")
+        {
+            console.log("Requesting note from rinkeby network")
+            provider = new ethers.providers.AlchemyProvider("rinkeby", data.config.alchemyRinkebyKey);
+        }
+        else
+        {
+        }
+
+        if(provider)
+        {
             try
             {
                 let deploymentAddress = data.config.deploymentAddress;
                 let contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, provider);
 
                 let isContentOwned = await contract.isContentOwned(keyInput);
-                if(isContentOwned)
+                if (isContentOwned)
                 {
                     let noteContentString = await contract.getContentByKey(keyInput);
 
-                    if(typeof noteContentString === "string")
+                    if (typeof noteContentString === "string")
                     {
                         let noteContentObject;
 
@@ -90,29 +132,12 @@ export default function KeyInput(props)
                             setData({toastError: "Error in Note format, " + error.message});
                         }
 
-                        if(noteContentObject.imageIpfsHash)
+                        if (noteContentObject.imageIpfsHash)
                         {
-
-                            try
-                            {
-                                //requesting cloud data
-                                const requestBody = {imageIpfsHash: noteContentObject.imageIpfsHash};
-                                const requestUrl = (data.backendUrl + "downloadNote/");
-                                const response = await fetch(requestUrl, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(requestBody)});
-                                const jsonData = await response.json();
-                                setCloudImageUri(jsonData.imageUri);
-                            }
-                            catch (error)
-                            {
-                                setData({toastError: "Error could not load cloud data, " + error.message});
-                            }
-
-
-
                             //note loaded from blockchain
                             console.log(noteContentObject);
                             setNoteOutput(noteContentObject);
-                            setKeyInput("");
+                            // setKeyInput("");
                             setComplete(true);
                             setData({toastSuccess: "Retrieved Note"});
                         }
@@ -134,41 +159,37 @@ export default function KeyInput(props)
             }
             catch (error)
             {
-                if(error.data)
+                if (error.data)
                 {
-                    if(error.data.code && error.data.code === -32603)
+                    if (error.data.code && error.data.code === -32603)
                     {
-                        const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
+                        const contractError = error.data.message.split("reverted with reason string ").pop().slice(1, -1);
 
-                        if(contractError === "Note Already Minted")
+                        if (contractError === "Note Already Minted")
                         {
                             setData({toastError: contractError});
-                        }
-                        else
+                        } else
                         {
                             console.error(contractError);
                             setData({toastError: error.data.message});
                         }
-                    }
-                    else
+                    } else
                     {
                         setData({toastError: error.message});
                     }
-                }
-                else
+                } else
                 {
                     setData({toastError: error.message});
                 }
 
             }
 
-            setDisabled(false);
-            setData({showSpinner: false});
         }
         else
         {
-            setData({toastMessage: "Input key for note first note:"});
+            setData({toastError: "Provider null, unknown network config: " + currentNetwork})
         }
+
 
     }
 
@@ -211,16 +232,16 @@ export default function KeyInput(props)
                                 </td>
                             </tr>
                             <tr className="table-active">
-                                <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
+                                <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <img className={'img-fluid rounded'} onClick={() => setShowIpfsBox(true)}  style={{maxHeight: 200}} src={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash} alt={"image"}/>
+                                    <img className={'img-fluid rounded'} onClick={() => setShowCloudBox(true)}  style={{maxHeight: 200}} src={cloudImageUri} alt={"image"}/>
                                 </td>
                             </tr>
 
                             <tr className="table-active">
-                                <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
+                                <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <img className={'img-fluid rounded'} onClick={() => setShowCloudBox(true)}  style={{maxHeight: 200}} src={cloudImageUri} alt={"image"}/>
+                                    <img className={'img-fluid rounded'} onClick={() => setShowIpfsBox(true)}  style={{maxHeight: 200}} src={ipfsImageUri} alt={"image"}/>
                                 </td>
                             </tr>
 
@@ -228,19 +249,19 @@ export default function KeyInput(props)
                     </table>
                 </div>
 
+                {showIpfsBox ?
+                    <Lightbox
+                        mainSrc={ipfsImageUri}
+                        onCloseRequest={() => setShowIpfsBox(false)}
+                        imageTitle={"IPFS Stored Image"}
+                    />
+                    : <></>
+                }
                 {showBlockchainBox ?
                     <Lightbox
                         mainSrc={noteOutput.imageUri}
                         onCloseRequest={() => setShowBlockchainBox(false)}
                         imageTitle={"Blockchain Stored Image"}
-                    />
-                    : <></>
-                }
-                {showIpfsBox ?
-                    <Lightbox
-                        mainSrc={"https://gateway.pinata.cloud/ipfs/" + noteOutput.imageIpfsHash}
-                        onCloseRequest={() => setShowIpfsBox(false)}
-                        imageTitle={"IPFS Stored Image"}
                     />
                     : <></>
                 }
