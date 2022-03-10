@@ -182,7 +182,7 @@ export default function KeyInput(props)
             <div className="alert bg-secondary">
 
                 <p>
-                    Enter the node key a click request to load the content.
+                    Enter a Note key and click the request the to load the content.
                 </p>
 
                 <div className="input-group mt-3">
