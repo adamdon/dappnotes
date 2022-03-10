@@ -8,7 +8,6 @@
     "run-node": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat node",
     "compile-deploy": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network localhost",
     "contract-withdraw": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run contract-withdraw.js --network localhost",
-    "compile-deploy-ropsten": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network ropsten",
     "compile-deploy-rinkeby": "export NODE_OPTIONS=--openssl-legacy-provider && npx hardhat run compile-deploy.js --network rinkeby"
   },
   "author": "",

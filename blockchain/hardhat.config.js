@@ -24,12 +24,8 @@ module.exports = {
     artifacts: './src/artifacts',
   },
   networks: {
-    ropsten: {
-      url: process.env.ALCHEMY_ROPSTEN_KEY,
-      accounts: [process.env.ROPSTEN_PRIVATE_KEY]
-    },
     rinkeby: {
-      url: process.env.ALCHEMY_RINKEBY_KEY,
+      url: process.env.ALCHEMY_RINKEBY_URL,
       accounts: [process.env.RINKEBY_PRIVATE_KEY]
     }
   }
