@@ -46,7 +46,7 @@ export default function App()
         if(process.env.REACT_ENV === "PRODUCTION")
         {
             console.log(`%c 💻 dappnotes startup (╯°□°)╯︵ ┻━┻ (PRODUCTION)`, `background-color: gray; font-weight: bold`);
-            setData({backendUrl: "./api/"});
+            setData({backendUrl: (window.location.hostname + "/")});
         }
         else
         {

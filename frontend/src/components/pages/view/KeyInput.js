@@ -57,8 +57,6 @@ export default function KeyInput(props)
         {
             setData({toastError: "Unknown network config: " + currentNetwork})
         }
-        console.log(currentNetwork);
-
     }
 
 
