@@ -1,20 +1,26 @@
 const hre = require("hardhat");
 const fs = require('fs');
-
+const { ethers } = require("hardhat");
 async function main()
 {
     await hre.run('compile');
+
+    const [deployer] = await ethers.getSigners();
+
 
     const DappNotes = await hre.ethers.getContractFactory("DappNotes");
     const dappnotes = await DappNotes.deploy();
 
     await dappnotes.deployed();
 
-    const deployment = {address: dappnotes.address};
+    const deployment = {deploymentAddress: dappnotes.address, ownerAddress: deployer.address, networkName: hre.network.name};
     const deploymentString = JSON.stringify(deployment);
     fs.writeFileSync('deployment.json', deploymentString);
 
-    console.log("DappNotes deployed to:", dappnotes.address);
+    console.log("DappNotes networkName:", deployment.networkName);
+    console.log("DappNotes ownerAddress:", deployment.ownerAddress);
+    console.log("DappNotes deployed to:", deployment.deploymentAddress);
+
 
 }
 

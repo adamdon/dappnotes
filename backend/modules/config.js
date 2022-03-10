@@ -16,6 +16,9 @@ export default
     maxFileSizeKb: 10000,
     maxCompressedFileSizeKb: 20,
     alchemyRopstenKey: process.env.ALCHEMY_ROPSTEN_KEY,
-    deploymentAddress: deploymentJson.address,
+    alchemyRinkebyKey: process.env.ALCHEMY_RINKEBY_KEY,
+    deploymentAddress: deploymentJson.deploymentAddress,
+    ownerAddress: deploymentJson.ownerAddress,
+    networkName: deploymentJson.networkName,
     contract: contractJson,
 }
