@@ -1,4 +1,4 @@
-import Loader from "react-loader-spinner";
+import {Puff} from "react-loader-spinner";
 import {useData} from "./DataContextProvider";
 import {useState, useEffect} from "react";
 
@@ -29,7 +29,7 @@ export default function LoadingSpinner()
         // <div className="fixed-bottom d-flex justify-content-center p-3">
         <div className=" align-center  position-fixed bottom-0 start-50 translate-middle-x p-3">
             <div className={isSpinning ? 'fadeIn' : 'fadeOut' }>
-                <Loader
+                <Puff
                     type="Grid"
                     color="orange"
                     height={40}

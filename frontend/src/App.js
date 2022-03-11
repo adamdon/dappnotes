@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@popperjs/core";
 import 'bootstrap';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'font-awesome/css/font-awesome.min.css';
 import 'react-image-lightbox/style.css';
 import "./styles/colors.css";

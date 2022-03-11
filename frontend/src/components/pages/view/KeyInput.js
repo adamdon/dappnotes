@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
+import {BallTriangle, FallingLines} from "react-loader-spinner";
 import Lightbox from 'react-image-lightbox';
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
 import AnimatedMount from "../../utilities/AnimatedMount";
 import {useData} from "../../utilities/DataContextProvider";
+import ProgressiveImage from "react-progressive-graceful-image";
 
 
 
@@ -15,6 +17,9 @@ export default function KeyInput(props)
 
     const [keyInput, setKeyInput] = useState("");
     const [noteOutput, setNoteOutput] = useState("");
+
+    const [noteName, setNoteName] = useState("");
+    const [blockchainImageUri, setBlockchainImageUri] = useState("");
     const [cloudImageUri, setCloudImageUri] = useState("");
     const [ipfsImageUri, setIpfsImageUri] = useState("");
 
@@ -34,7 +39,7 @@ export default function KeyInput(props)
         {
             setKeyInput(props.keyId);
         }
-    }, []);
+    }, [props]);
 
 
     async function requestNoteOnClick()
@@ -105,6 +110,7 @@ export default function KeyInput(props)
         }
         else
         {
+            setData({toastError: "Network unknown"});
         }
 
         if(provider)
@@ -132,13 +138,20 @@ export default function KeyInput(props)
                             setData({toastError: "Error in Note format, " + error.message});
                         }
 
-                        if (noteContentObject.imageIpfsHash)
+                        if (noteContentObject.imageUri)
                         {
+                            //
                             //note loaded from blockchain
+                            //
                             console.log(noteContentObject);
+
                             setNoteOutput(noteContentObject);
-                            // setKeyInput("");
+                            setNoteName(noteContentObject.name);
+                            setBlockchainImageUri(noteContentObject.imageUri);
+
+                            setKeyInput("");
                             setComplete(true);
+
                             setData({toastSuccess: "Retrieved Note"});
                         }
                         else
@@ -218,30 +231,50 @@ export default function KeyInput(props)
             <AnimatedMount show={complete}>
 
                 <div className="text-center rounded-3 py-3 my-3">
-                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3" >
                         <thead>
                             <tr className="table-active">
-                                <th className="text-center text-light" colSpan={2}>Note Contents</th>
+                                <th className="text-center text-light" colSpan={2}>{noteName}</th>
                             </tr>
                         </thead>
                         <tbody className="">
-                            <tr className="table-active">
+
+
+                            <tr className="table-active"  style={{width: 1000}}>
                                 <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
-                                <td className="text-start text-light px-3">
-                                    <img className={'img-fluid rounded'} src={noteOutput.imageUri} onClick={() => setShowBlockchainBox(true)} style={{maxHeight: 200}}  alt={"image"}/>
+                                <td className="text-start text-light px-3" >
+                                    <ProgressiveImage delay={1000}  src={blockchainImageUri} placeholder="" style={{Height: 200}}>
+                                        {(src, loading) => loading ?
+                                            <div ><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
+                                            :
+                                            <img className={'img-fluid rounded'} onClick={() => setShowBlockchainBox(true)} src={src} alt="Blockchain Stored" style={{maxHeight: 200}} />
+                                        }
+                                    </ProgressiveImage>
                                 </td>
                             </tr>
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <img className={'img-fluid rounded'} onClick={() => setShowCloudBox(true)}  style={{maxHeight: 200}} src={cloudImageUri} alt={"image"}/>
+                                    <ProgressiveImage delay={1250}  src={cloudImageUri} placeholder="" style={{Height: 200}}>
+                                        {(src, loading) => loading ?
+                                            <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
+                                            :
+                                            <img className={'img-fluid rounded'} onClick={() => setShowCloudBox(true)} src={src} alt="Cloud Stored" style={{maxHeight: 200}} />
+                                        }
+                                    </ProgressiveImage>
                                 </td>
                             </tr>
 
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <img className={'img-fluid rounded'} onClick={() => setShowIpfsBox(true)}  style={{maxHeight: 200}} src={ipfsImageUri} alt={"image"}/>
+                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}}>
+                                        {(src, loading) => loading ?
+                                            <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
+                                            :
+                                            <img className={'img-fluid rounded'} onClick={() => setShowIpfsBox(true)} src={src} alt="IPFS Stored" style={{maxHeight: 200}} />
+                                        }
+                                    </ProgressiveImage>
                                 </td>
                             </tr>
 
