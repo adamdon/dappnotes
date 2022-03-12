@@ -19,6 +19,12 @@ body
     padding: 5px 5px 5px 5px;
 }
 
+.note-wizard
+{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 .content-container-fluid
 {
     margin: 5px 5px 5px 5px;

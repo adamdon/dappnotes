@@ -22,7 +22,7 @@ export class database
         catch (error)
         {
             console.error(error.message);
-            process.exit(1);  //exit run and fail
+            // process.exit(1);  //exit run and fail
         }
     }
 

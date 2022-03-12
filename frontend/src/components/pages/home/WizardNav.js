@@ -20,7 +20,7 @@ export default function WizardNav(props)
 
     return (
         <div className={'text-center'}>
-            <div className={'mb-3 pt-0 pb-1 alert bg-secondary d-inline-block'}>
+            <div className={'mb-0 pt-0 pb-1 alert bg-secondary'}>
 
                 <div className={'text-center'}>
                     {Array.from(Array(props.totalSteps).keys()).map((value, key) => (
