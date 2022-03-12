@@ -4,6 +4,7 @@ import Lightbox from 'react-image-lightbox';
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
 import AnimatedMount from "../../utilities/AnimatedMount";
+import FadeIn from 'react-fade-in';
 import {useData} from "../../utilities/DataContextProvider";
 import ProgressiveImage from "react-progressive-graceful-image";
 
@@ -213,15 +214,18 @@ export default function KeyInput(props)
 
     return (
             <div className="alert bg-secondary mb-0">
-                <p>
-                    Enter a Note key and click the request the to load the content.
-                </p>
+                <FadeIn transitionDuration={500} delay={250}>
+                    <p>
+                        Enter a Note key and click the request the to load the content.
+                    </p>
 
-                <div className="input-group mt-3">
-                    <span className="input-group-text" >Note Key</span>
-                    <input value={keyInput} onChange={e => setKeyInput(e.target.value)} onKeyDown={(event) => event.key === "Enter" ? requestNoteOnClick() : {}} disabled={disabled} placeholder="Enter Key" type="text" aria-label="keyInput" id="keyInput"  className="form-control w-50"/>
-                    <button onClick={requestNoteOnClick} disabled={disabled} className="btn btn-outline-light" type="button" id="submit">Request Note</button>
-                </div>
+                    <div className="input-group mt-3">
+                        <span className="input-group-text" >Note Key</span>
+                        <input value={keyInput} onChange={e => setKeyInput(e.target.value)} onKeyDown={(event) => event.key === "Enter" ? requestNoteOnClick() : {}} disabled={disabled} placeholder="Enter Key" type="text" aria-label="keyInput" id="keyInput"  className="form-control w-50"/>
+                        <button onClick={requestNoteOnClick} disabled={disabled} className="btn btn-outline-light" type="button" id="submit">Request Note</button>
+                    </div>
+                </FadeIn>
+
             </div>
     );
 }

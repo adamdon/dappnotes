@@ -9,6 +9,7 @@ import AnimatedMount from "../../utilities/AnimatedMount";
 import ProgressiveImage from "react-progressive-graceful-image";
 import {FallingLines} from "react-loader-spinner";
 import Lightbox from "react-image-lightbox";
+import FadeIn from 'react-fade-in';
 
 export default function ViewPage()
 {
@@ -51,6 +52,9 @@ export default function ViewPage()
                 <AnimatedMount show={complete}>
                 <ContainerContentRow>
                     <ContainerContent size="12" icon="save" title="Note Contents">
+
+                    <FadeIn transitionDuration={500} delay={250}>
+
 
                     <table className="table table-sm table-hover bg-primary table-borderless table-responsive m-0  pb-3 rounded" >
                         <thead>
@@ -132,6 +136,7 @@ export default function ViewPage()
                         : <></>
                     }
 
+                    </FadeIn>
                     </ContainerContent>
                 </ContainerContentRow>
             </AnimatedMount>
