@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import FadeIn from 'react-fade-in';
 import {useData} from "../../utilities/DataContextProvider";
 
 
@@ -56,10 +57,12 @@ export default function StepIntro(props)
             </div>
 
             <ul className="list-group my-3 rounded">
-                <li className="list-group-item bg-primary text-light lead">&bull; Create Notes for a digital time capsule or to secure your data 📝 📷 ⏳️</li>
-                <li className="list-group-item bg-primary text-light lead">&bull; Utilize the blockchain for permanent on-chain storage 🧊 ⛓️ 💾</li>
-                <li className="list-group-item bg-primary text-light lead">&bull; Provides additional cloud and InterPlanetary File System storage ☁️ 🌐 🗃</li>
-                <li className="list-group-item bg-primary text-light lead">&bull; Easy to use, step by step instructions with link sharing 😀 📖 📨</li>
+                <FadeIn transitionDuration={500} delay={250}>
+                    <li className="list-group-item bg-primary text-light lead">&bull; Create Notes for a digital time capsule or to secure your data 📝 📷 ⏳️</li>
+                    <li className="list-group-item bg-primary text-light lead">&bull; Utilize the blockchain for permanent on-chain storage 🧊 ⛓️ 💾</li>
+                    <li className="list-group-item bg-primary text-light lead">&bull; Provides additional cloud and InterPlanetary File System storage ☁️ 🌐 🗃</li>
+                    <li className="list-group-item bg-primary text-light lead">&bull; Easy to use, step by step instructions with link sharing 😀 📖 📨</li>
+                </FadeIn>
             </ul>
 
 
