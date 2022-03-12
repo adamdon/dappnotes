@@ -50,13 +50,17 @@ export default function StepIntro(props)
     return (
         <div>
 
-            <div className="container-fluid bg-primary text-light p-3 rounded">
-                <div className="container bg-secondary p-3 rounded">
-                    <h3 className="display-4">Dappnotes</h3>
-                    <p>Permanent on-chain persistence</p>
-
-                </div>
+            <div className="bg-primary text-light px-3 py-1 rounded">
+                <h3 className="display-4">DappNotes</h3>
+                <p className={'mb-3'}>Decentralised App Notes</p>
             </div>
+
+            <ul className="list-group my-3 rounded">
+                <li className="list-group-item bg-primary text-light lead">&bull; Create Notes for a digital time capsule or to secure your data 📝 📷 ⏳️</li>
+                <li className="list-group-item bg-primary text-light lead">&bull; Utilize the blockchain for permanent on-chain storage 🧊 ⛓️ 💾</li>
+                <li className="list-group-item bg-primary text-light lead">&bull; Provides additional cloud and InterPlanetary File System storage ☁️ 🌐 🗃</li>
+                <li className="list-group-item bg-primary text-light lead">&bull; Easy to use, step by step instructions with link sharing 😀 📖 📨</li>
+            </ul>
 
 
 

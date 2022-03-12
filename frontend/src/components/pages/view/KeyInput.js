@@ -243,7 +243,7 @@ export default function KeyInput(props)
                             <tr className="table-active"  style={{width: 1000}}>
                                 <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3" >
-                                    <ProgressiveImage delay={1000}  src={blockchainImageUri} placeholder="" style={{Height: 200}}>
+                                    <ProgressiveImage delay={1000}  src={blockchainImageUri} placeholder="" style={{Height: 200}} onError={(error) => setData({toastError: error.type})}>
                                         {(src, loading) => loading ?
                                             <div ><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :
@@ -255,7 +255,7 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <ProgressiveImage delay={1250}  src={cloudImageUri} placeholder="" style={{Height: 200}}>
+                                    <ProgressiveImage delay={1250}  src={cloudImageUri} placeholder="" style={{Height: 200}} onError={(error) => setData({toastError: error.type})}>
                                         {(src, loading) => loading ?
                                             <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :
@@ -268,7 +268,7 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}}>
+                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}} onError={(error) => setData({toastError: error.type})} >
                                         {(src, loading) => loading ?
                                             <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :
