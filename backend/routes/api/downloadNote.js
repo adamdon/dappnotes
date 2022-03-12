@@ -2,6 +2,7 @@ import validator from 'validator';
 import mongoose from "mongoose";
 
 import {Note} from "../../models/Note.js";
+import {Database} from "../../modules/database.js";
 // import {verifyObjectId} from "../../helpers/verifyObjectId.js";
 
 
@@ -10,6 +11,18 @@ export default async function (request, response)
     try
     {
         let imageIpfsHash = request.body.imageIpfsHash;
+
+        // Check database is connected
+        if (Database.isConnected === false)
+        {
+            return response.status(500).json({errors: [{message: "Database unavailable"}] });
+        }
+
+
+        if((typeof imageIpfsHash == "undefined"))
+        {
+            return response.status(400).json({errors: [{message: "Missing data"}] });
+        }
 
 
         //Check field is there

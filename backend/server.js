@@ -8,7 +8,7 @@ import cors from "cors";
 import config from "./modules/config.js"
 import errorHandler from "./middleware/errorHandler.js";
 import {router} from "./routes/router.js";
-import {database} from "./modules/database.js";
+import {Database} from "./modules/database.js";
 
 
 //Set request handles
@@ -28,7 +28,7 @@ if(process.env.NODE_ENV === "DEVELOPMENT") //if running on dev mode
 
 
 // //Connecting to database using process.env.MONGO_URI environment variables
-await database.connect();
+await Database.connect();
 
 
 //morgan logging config

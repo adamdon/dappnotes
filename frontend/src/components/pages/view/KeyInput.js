@@ -16,15 +16,16 @@ export default function KeyInput(props)
     const [data, setData] = useData();
 
     const [keyInput, setKeyInput] = useState("");
-    const [noteOutput, setNoteOutput] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const [complete, setComplete] = useState(false);
+
+
 
     const [noteName, setNoteName] = useState("");
     const [blockchainImageUri, setBlockchainImageUri] = useState("");
     const [cloudImageUri, setCloudImageUri] = useState("");
     const [ipfsImageUri, setIpfsImageUri] = useState("");
 
-    const [disabled, setDisabled] = useState(false);
-    const [complete, setComplete] = useState(false);
 
     const [showBlockchainBox, setShowBlockchainBox] = useState(false);
     const [showIpfsBox, setShowIpfsBox] = useState(false);
@@ -82,7 +83,16 @@ export default function KeyInput(props)
             const requestUrl = (data.backendUrl + "downloadNote/");
             const response = await fetch(requestUrl, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(requestBody)});
             const jsonData = await response.json();
-            setCloudImageUri(jsonData.imageUri);
+            if(jsonData.errors)
+            {
+                setData({toastError: "Loading Cloud Note Failed - " + jsonData.errors[0].message});
+            }
+            else
+            {
+                // setData({toastSuccess: "Retrieved Cloud Note"});
+                setCloudImageUri(jsonData.imageUri);
+            }
+
         }
         catch (error)
         {
@@ -145,14 +155,14 @@ export default function KeyInput(props)
                             //
                             console.log(noteContentObject);
 
-                            setNoteOutput(noteContentObject);
+                            // setNoteOutput(noteContentObject);
                             setNoteName(noteContentObject.name);
                             setBlockchainImageUri(noteContentObject.imageUri);
 
                             setKeyInput("");
                             setComplete(true);
 
-                            setData({toastSuccess: "Retrieved Note"});
+                            setData({toastSuccess: "Retrieved Blockchain Note"});
                         }
                         else
                         {
@@ -243,7 +253,7 @@ export default function KeyInput(props)
                             <tr className="table-active"  style={{width: 1000}}>
                                 <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3" >
-                                    <ProgressiveImage delay={1000}  src={blockchainImageUri} placeholder="" style={{Height: 200}} onError={(error) => setData({toastError: error.type})}>
+                                    <ProgressiveImage delay={1000}  src={blockchainImageUri} placeholder="" style={{Height: 200}} onError={(error) =>  console.error(error)}>
                                         {(src, loading) => loading ?
                                             <div ><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :
@@ -255,7 +265,7 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <ProgressiveImage delay={1250}  src={cloudImageUri} placeholder="" style={{Height: 200}} onError={(error) => setData({toastError: error.type})}>
+                                    <ProgressiveImage delay={1250}  src={cloudImageUri} placeholder="" style={{Height: 200}} onError={(error) =>  console.error(error)}>
                                         {(src, loading) => loading ?
                                             <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :
@@ -268,7 +278,7 @@ export default function KeyInput(props)
                             <tr className="table-active">
                                 <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
                                 <td className="text-start text-light px-3">
-                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}} onError={(error) => setData({toastError: error.type})} >
+                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}} onError={(error) => console.error(error)} >
                                         {(src, loading) => loading ?
                                             <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :
@@ -292,7 +302,7 @@ export default function KeyInput(props)
                 }
                 {showBlockchainBox ?
                     <Lightbox
-                        mainSrc={noteOutput.imageUri}
+                        mainSrc={blockchainImageUri}
                         onCloseRequest={() => setShowBlockchainBox(false)}
                         imageTitle={"Blockchain Stored Image"}
                     />

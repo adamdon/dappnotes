@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
 
-export class database
+export class Database
 {
     constructor() {    }
+
+    static isConnected = false;
 
     static async connect()
     {
@@ -16,7 +18,7 @@ export class database
             mongoose.set('useCreateIndex', true);
             mongoose.set('useFindAndModify', false);
             await mongoose.connect(process.env.MONGO_URI, null, null );
-
+            this.isConnected = true;
             console.log("[mongoose] ...connected")
         }
         catch (error)
