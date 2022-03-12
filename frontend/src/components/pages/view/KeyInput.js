@@ -17,19 +17,7 @@ export default function KeyInput(props)
 
     const [keyInput, setKeyInput] = useState("");
     const [disabled, setDisabled] = useState(false);
-    const [complete, setComplete] = useState(false);
 
-
-
-    const [noteName, setNoteName] = useState("");
-    const [blockchainImageUri, setBlockchainImageUri] = useState("");
-    const [cloudImageUri, setCloudImageUri] = useState("");
-    const [ipfsImageUri, setIpfsImageUri] = useState("");
-
-
-    const [showBlockchainBox, setShowBlockchainBox] = useState(false);
-    const [showIpfsBox, setShowIpfsBox] = useState(false);
-    const [showCloudBox, setShowCloudBox] = useState(false);
 
 
 
@@ -71,7 +59,7 @@ export default function KeyInput(props)
 
     async function requestIpfsNote()
     {
-        setIpfsImageUri("https://gateway.pinata.cloud/ipfs/" + keyInput)
+        props.setIpfsImageUri("https://gateway.pinata.cloud/ipfs/" + keyInput)
     }
 
     async function requestCloudNote()
@@ -90,7 +78,8 @@ export default function KeyInput(props)
             else
             {
                 // setData({toastSuccess: "Retrieved Cloud Note"});
-                setCloudImageUri(jsonData.imageUri);
+                props.setCloudImageUri(jsonData.imageUri);
+
             }
 
         }
@@ -156,11 +145,12 @@ export default function KeyInput(props)
                             console.log(noteContentObject);
 
                             // setNoteOutput(noteContentObject);
-                            setNoteName(noteContentObject.name);
-                            setBlockchainImageUri(noteContentObject.imageUri);
+                            props.setNoteName(noteContentObject.name);
+                            props.setBlockchainImageUri(noteContentObject.imageUri);
+
 
                             setKeyInput("");
-                            setComplete(true);
+                            props.setComplete(true);
 
                             setData({toastSuccess: "Retrieved Blockchain Note"});
                         }
@@ -222,9 +212,7 @@ export default function KeyInput(props)
 
 
     return (
-        <div>
-            <div className="alert bg-secondary">
-
+            <div className="alert bg-secondary mb-0">
                 <p>
                     Enter a Note key and click the request the to load the content.
                 </p>
@@ -234,96 +222,6 @@ export default function KeyInput(props)
                     <input value={keyInput} onChange={e => setKeyInput(e.target.value)} onKeyDown={(event) => event.key === "Enter" ? requestNoteOnClick() : {}} disabled={disabled} placeholder="Enter Key" type="text" aria-label="keyInput" id="keyInput"  className="form-control w-50"/>
                     <button onClick={requestNoteOnClick} disabled={disabled} className="btn btn-outline-light" type="button" id="submit">Request Note</button>
                 </div>
-
             </div>
-
-
-            <AnimatedMount show={complete}>
-
-                <div className="text-center rounded-3 py-3 my-3">
-                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3" >
-                        <thead>
-                            <tr className="table-active">
-                                <th className="text-center text-light" colSpan={2}>{noteName}</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
-
-
-                            <tr className="table-active"  style={{width: 1000}}>
-                                <td className="text-center text-light px-3">Blockchain Stored Image <i className="fa fa-save"></i> :</td>
-                                <td className="text-start text-light px-3" >
-                                    <ProgressiveImage delay={1000}  src={blockchainImageUri} placeholder="" style={{Height: 200}} onError={(error) =>  console.error(error)}>
-                                        {(src, loading) => loading ?
-                                            <div ><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
-                                            :
-                                            <img className={'img-fluid rounded'} onClick={() => setShowBlockchainBox(true)} src={src} alt="Blockchain Stored" style={{maxHeight: 200}} />
-                                        }
-                                    </ProgressiveImage>
-                                </td>
-                            </tr>
-                            <tr className="table-active">
-                                <td className="text-center text-light px-3">Cloud Stored image <i className="fa fa-save"></i> :</td>
-                                <td className="text-start text-light px-3">
-                                    <ProgressiveImage delay={1250}  src={cloudImageUri} placeholder="" style={{Height: 200}} onError={(error) =>  console.error(error)}>
-                                        {(src, loading) => loading ?
-                                            <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
-                                            :
-                                            <img className={'img-fluid rounded'} onClick={() => setShowCloudBox(true)} src={src} alt="Cloud Stored" style={{maxHeight: 200}} />
-                                        }
-                                    </ProgressiveImage>
-                                </td>
-                            </tr>
-
-                            <tr className="table-active">
-                                <td className="text-center text-light px-3">IPFS Stored Image <i className="fa fa-save"></i> :</td>
-                                <td className="text-start text-light px-3">
-                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}} onError={(error) => console.error(error)} >
-                                        {(src, loading) => loading ?
-                                            <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
-                                            :
-                                            <img className={'img-fluid rounded'} onClick={() => setShowIpfsBox(true)} src={src} alt="IPFS Stored" style={{maxHeight: 200}} />
-                                        }
-                                    </ProgressiveImage>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-
-                {showIpfsBox ?
-                    <Lightbox
-                        mainSrc={ipfsImageUri}
-                        onCloseRequest={() => setShowIpfsBox(false)}
-                        imageTitle={"IPFS Stored Image"}
-                    />
-                    : <></>
-                }
-                {showBlockchainBox ?
-                    <Lightbox
-                        mainSrc={blockchainImageUri}
-                        onCloseRequest={() => setShowBlockchainBox(false)}
-                        imageTitle={"Blockchain Stored Image"}
-                    />
-                    : <></>
-                }
-                {showCloudBox ?
-                    <Lightbox
-                        mainSrc={cloudImageUri}
-                        onCloseRequest={() => setShowCloudBox(false)}
-                        imageTitle={"Cloud Stored image"}
-                    />
-                    : <></>
-                }
-            </AnimatedMount>
-
-
-
-
-
-
-        </div>
-
     );
 }
