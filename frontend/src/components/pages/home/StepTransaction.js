@@ -40,12 +40,13 @@ export default function StepTransaction(props)
 
     async function performTransaction()
     {
+        let progressUpdaterInterval = null;
         try
         {
             setData({toastMessage: "Transaction starting"});
             setDisabled(true);
             setShowProgress(true);
-            setProgressPercentage(10);
+            setProgressPercentage(prevState => prevState + 5);
             // let detectProvider = await detectEthereumProvider()
 
             console.log("data.note");
@@ -69,20 +70,22 @@ export default function StepTransaction(props)
 
             let deploymentAddress = data.config.deploymentAddress;
             let contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
-            setProgressPercentage(15);
+            setProgressPercentage(prevState => prevState + 5);
 
             let isContentOwned = await contract.isContentOwned(data.ipfsHash);
-            setProgressPercentage(25);
+            setProgressPercentage(prevState => prevState + 5);
             if(!isContentOwned)
             {
+                setProgressPercentage(prevState => prevState + 5);
+
+                progressUpdaterInterval = setInterval(() => {
+                    setProgressPercentage(prevState => prevState < 95 ? prevState + 1 : prevState);
+                }, 1250);
+
                 const connection = contract.connect(signer);
                 const connectionAddress = connection.address;
-                setProgressPercentage(35);
-
                 const result = await contract.mintNote(connectionAddress, data.ipfsHash, JSON.stringify(data.note), {value: ethers.utils.parseEther('0.001'),});
                 const receipt = await result.wait();
-                setProgressPercentage(60);
-
 
 
                 const gasUsed = (receipt.cumulativeGasUsed) * (receipt.effectiveGasPrice);
@@ -118,21 +121,24 @@ export default function StepTransaction(props)
                     }
                     else
                     {
+                        clearInterval(progressUpdaterInterval);
                         setData({toastError: "Could not load ETH/USD conversion rate. Error: " + JSON.stringify(jsonData)});
                     }
                 }
                 catch (error)
                 {
+                    clearInterval(progressUpdaterInterval);
                     console.error(error);
                     setData({toastError: "Could not load ETH/USD conversion rate. Error: " + error.message});
                 }
 
-
+                clearInterval(progressUpdaterInterval);
                 setProgressPercentage(100);
                 setIsComplete(true);
             }
             else
             {
+                clearInterval(progressUpdaterInterval);
                 setData({toastError: "Content Already Minted"});
                 setProgressPercentage(100);
                 setIsAlreadyMinted(true);
@@ -140,6 +146,7 @@ export default function StepTransaction(props)
         }
         catch (error)
         {
+            if(progressUpdaterInterval) clearInterval(progressUpdaterInterval);
             if(error.data)
             {
                 if(error.data.code && error.data.code === -32603)
