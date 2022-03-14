@@ -15,9 +15,21 @@ export default function ViewPage()
 {
     const [data, setData] = useData();
 
+    const [gatewayList, setGatewayList] = useState([
+        "https://jorropo.net/ipfs/",
+        "https://ipfs.2read.net/ipfs/",
+        "https://ipfs.adatools.io/ipfs/",
+        "https://ipfs.zod.tv/ipfs/",
+        "https://hardbin.com/ipfs/",
+        "https://ipfs.fleek.co/ipfs/",
+        "https://ipfs.eternum.io/ipfs/",
+        "https://gateway.ipfs.io/ipfs/",
+        "https://cloudflare-ipfs.com/ipfs/"
+        ]);
 
     const [complete, setComplete] = useState(false);
 
+    const [ipfsHash, setIpfsHash] = useState("");
     const [noteName, setNoteName] = useState("");
     const [blockchainImageUri, setBlockchainImageUri] = useState("");
     const [cloudImageUri, setCloudImageUri] = useState("");
@@ -30,6 +42,26 @@ export default function ViewPage()
 
 
 
+    function handleIpfsErrorEvent(event)
+    {
+        if(gatewayList.length !== 0)
+        {
+            const newGatewayList = [...gatewayList];
+            const newGateway = [...newGatewayList].pop();
+            newGatewayList.pop();
+            console.log(event);
+            console.log("Alternative IPFS gateway used: " + newGateway)
+            setGatewayList(newGatewayList);
+            setIpfsImageUri(newGateway + ipfsHash);
+        }
+        else
+        {
+            setData({toastError: "Could not access IPFS content on any gateway."});
+        }
+    }
+
+
+
     return (
         <span>
             <ContainerLayout>
@@ -39,6 +71,7 @@ export default function ViewPage()
                         <KeyInput
                             keyId={useParams().keyId}
                             setComplete={(value) => setComplete(value)}
+                            setIpfsHash={(value) => setIpfsHash(value)}
                             setNoteName={(value) => setNoteName(value)}
                             setBlockchainImageUri={(value) => setBlockchainImageUri(value)}
                             setCloudImageUri={(value) => setCloudImageUri(value)}
@@ -92,7 +125,7 @@ export default function ViewPage()
                                 </td>
 
                                 <td className="text-center text-light px-3" style={{width: 300}} >
-                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}} onError={(error) => console.error(error)} >
+                                    <ProgressiveImage delay={1750}  src={ipfsImageUri} placeholder="" style={{Height: 200}} onError={(error) => handleIpfsErrorEvent(error)} >
                                         {(src, loading) => loading ?
                                             <div><FallingLines height="200" width="200" color='white' ariaLabel='loading'/></div>
                                             :

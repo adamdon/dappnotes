@@ -60,6 +60,7 @@ export default function KeyInput(props)
 
     async function requestIpfsNote()
     {
+        props.setIpfsHash(keyInput);
         props.setIpfsImageUri("https://gateway.pinata.cloud/ipfs/" + keyInput)
     }
 
