@@ -10,11 +10,12 @@ import {Routes, Route, Link} from "react-router-dom";
 import {useData} from "./components/utilities/DataContextProvider";
 import NavTop from "./components/pages/NavTop";
 import HomePage from "./components/pages/home/HomePage";
-import AdminPage from "./components/pages/test/AdminPage";
+import AdminPage from "./components/pages/admin/AdminPage";
 import ToastBock from "./components/utilities/ToastBlock";
 import LoadingSpinner from "./components/utilities/LoadingSpinner";
 import AnimatedMount from "./components/utilities/AnimatedMount";
 import ViewPage from "./components/pages/view/ViewPage";
+import AboutPage from "./components/pages/about/AboutPage";
 
 
 
@@ -124,6 +125,7 @@ export default function App()
                 <Route path="/" element={<AnimatedMount show={loaded}> <HomePage /> </AnimatedMount>} />
                 <Route path="/view/" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
                 <Route path="/view/:keyId" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
+                <Route path="/about" element={<AnimatedMount show={loaded}> <AboutPage /> </AnimatedMount>} />
                 <Route path="/admin" element={<AnimatedMount show={loaded}> <AdminPage /> </AnimatedMount>} />
             </Routes>
             <LoadingSpinner></LoadingSpinner>
