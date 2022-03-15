@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useData} from "../../utilities/DataContextProvider";
+import FadeIn from 'react-fade-in';
 import Web3Modal from "web3modal";
 import {ethers} from "ethers";
 import AnimatedMount from "../../utilities/AnimatedMount";
@@ -24,6 +25,7 @@ export default function StepTransaction(props)
     const [gasCostUsd, setGasCostUsd] = useState("");
     const [feeCostUsd, setFeeCostUsd] = useState("");
     const [totalCostUsd, setTotalCostUsd] = useState("");
+    const [etherscanUrl, setEtherscanUrl] = useState("");
 
 
 
@@ -94,10 +96,14 @@ export default function StepTransaction(props)
                 const value = result.value;
                 const valueEther = ethers.utils.formatEther(value);
                 const totalCostNumber = Number(gasUsedEther) + Number(valueEther);
+                const transactionHash = receipt.transactionHash;
+                const etherscanUrl = `${data.config.networkName === "rinkeby" ? "https://rinkeby." : "https://" }etherscan.io/tx/${transactionHash}`;
 
                 setGasCostEth(gasUsedEther);
                 setFeeCostEth(valueEther);
                 setTotalCostEth(String(totalCostNumber));
+                setEtherscanUrl(etherscanUrl);
+
 
                 try
                 {
@@ -231,41 +237,52 @@ export default function StepTransaction(props)
             <AnimatedMount show={isComplete}>
 
                 <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
-                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
-                        <thead>
-                            <tr className="table-active">
-                                <th className="text-center text-light" colSpan={2}>Successful Transaction Details</th>
-                            </tr>
-                        </thead>
-                        <tbody className="">
+                    <FadeIn transitionDuration={500} delay={250}>
 
-                            <tr className="table-active">
-                                <td className="text-end text-light px-3">Gas Cost <i className="fa fa-car"></i> :</td>
-                                <td className="text-start text-light px-3">{`ETH ${Number(gasCostEth).toFixed(4)} ${gasCostUsd}`}</td>
-                            </tr>
+                        <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                            <thead>
+                                <tr className="table-active">
+                                    <th className="text-center text-light" colSpan={2}>Successful Transaction Details</th>
+                                </tr>
+                            </thead>
+                            <tbody className="">
 
-                            <tr className="table-active">
-                                <td className="text-end text-light px-3">Fee Cost <i className="fa fa-ticket"></i> :</td>
-                                <td className="text-start text-light px-3">{`ETH ${Number(feeCostEth).toFixed(4)} ${feeCostUsd}`}</td>
-                            </tr>
+                                <tr className="table-active">
+                                    <td className="text-end text-light px-3">Gas Cost <i className="fa fa-car"></i> :</td>
+                                    <td className="text-start text-light px-3">{`ETH ${Number(gasCostEth).toFixed(4)} ${gasCostUsd}`}</td>
+                                </tr>
 
-                            <tr className="table-active">
-                                <td className="text-end text-light px-3">Total Cost <i className="fa fa-flag-checkered"></i> :</td>
-                                <td className="text-start  text-light font-weight-bold px-3">{`ETH ${Number(totalCostEth).toFixed(4)} ${totalCostUsd}`}</td>
-                            </tr>
+                                <tr className="table-active">
+                                    <td className="text-end text-light px-3">Fee Cost <i className="fa fa-ticket"></i> :</td>
+                                    <td className="text-start text-light px-3">{`ETH ${Number(feeCostEth).toFixed(4)} ${feeCostUsd}`}</td>
+                                </tr>
 
-                        </tbody>
-                    </table>
+                                <tr className="table-active">
+                                    <td className="text-end text-light px-3">Total Cost <i className="fa fa-flag-checkered"></i> :</td>
+                                    <td className="text-start  text-light font-weight-bold px-3">{`ETH ${Number(totalCostEth).toFixed(4)} ${totalCostUsd}`}</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </FadeIn>
+
                 </div>
 
-
-                <div className="my-3 text-center">
-                    <div className="d-grid gap-2" role="group" aria-label="Submit">
-                        <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
-                            <span><i className="fa fa-external-link"></i> View Note Content</span>
-                        </a>
+                <FadeIn transitionDuration={500} delay={250}>
+                    <div className="my-3 text-center">
+                        <div className="d-grid gap-2" role="group" aria-label="Submit">
+                            <a href={"/view/" + data.ipfsHash} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                                <span><i className="fa fa-external-link"></i> View Note Content</span>
+                            </a>
+                            <a href={etherscanUrl} target="_blank" rel="noopener noreferrer" type="button" className="btn btn-success">
+                                <span><i className="fa fa-external-link"></i> View Transaction on Block Explorer</span>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                </FadeIn>
+
+
 
             </AnimatedMount>
 
