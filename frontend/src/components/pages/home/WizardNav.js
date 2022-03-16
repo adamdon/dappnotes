@@ -1,4 +1,5 @@
 import React from "react";
+import FadeIn from 'react-fade-in';
 import {useData} from "../../utilities/DataContextProvider";
 
 
@@ -22,17 +23,19 @@ export default function WizardNav(props)
         <div className={'text-center'}>
             <div className={'mb-0 pt-0 pb-1 alert bg-secondary'}>
 
-                <div className={'text-center'}>
-                    {Array.from(Array(props.totalSteps).keys()).map((value, key) => (
-                        <a
-                            key={key}
-                            className={`${"dot text-decoration-none"} ${(props.currentStep === (value + 1)) ? "active" : (props.currentStep > (value + 1)) ? "complete" :''}`}
-                            onClick={() => dotOnClick(value)}
-                        >
-                        &bull;
-                    </a>
-                    ))}
-                </div>
+                <FadeIn transitionDuration={500} delay={250}>
+                    <div className={'text-center'}>
+                        {Array.from(Array(props.totalSteps).keys()).map((value, key) => (
+                            <a
+                                key={key}
+                                className={`${"dot text-decoration-none"} ${(props.currentStep === (value + 1)) ? "active" : (props.currentStep > (value + 1)) ? "complete" :''}`}
+                                onClick={() => dotOnClick(value)}
+                            >
+                                &bull;
+                            </a>
+                        ))}
+                    </div>
+                </FadeIn>
 
             </div>
         </div>

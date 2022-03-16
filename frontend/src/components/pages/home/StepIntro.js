@@ -50,30 +50,32 @@ export default function StepIntro(props)
 
     return (
         <div>
+            <FadeIn transitionDuration={500} delay={250}>
+                <div className="bg-primary text-light px-3 py-1 rounded">
+                    <h3 className="display-4">DappNotes</h3>
+                    <p className={'mb-3'}>Decentralised App Notes</p>
+                </div>
+            </FadeIn>
 
-            <div className="bg-primary text-light px-3 py-1 rounded">
-                <h3 className="display-4">DappNotes</h3>
-                <p className={'mb-3'}>Decentralised App Notes</p>
-            </div>
 
             <ul className="list-group my-3 rounded">
-                <FadeIn transitionDuration={500} delay={250}>
-                    <li className="list-group-item bg-primary text-light lead">&bull; Create Notes for a digital time capsule or to secure your data 📝 📷 ⏳️</li>
-                    <li className="list-group-item bg-primary text-light lead">&bull; Utilize the blockchain for permanent on-chain storage 🧊 ⛓️ 💾</li>
-                    <li className="list-group-item bg-primary text-light lead">&bull; Provides additional cloud and InterPlanetary File System storage ☁️ 🌐 🗃</li>
-                    <li className="list-group-item bg-primary text-light lead">&bull; Easy to use, step by step instructions with link sharing 😀 📖 📨</li>
-                </FadeIn>
+                    <FadeIn transitionDuration={500} delay={250}>
+                        <li className="list-group-item bg-primary text-light lead">&bull; Create Notes for a digital time capsule or to secure your data 📝 📷 ⏳️</li>
+                        <li className="list-group-item bg-primary text-light lead">&bull; Utilize the blockchain for permanent on-chain storage 🧊 ⛓️ 💾</li>
+                        <li className="list-group-item bg-primary text-light lead">&bull; Provides additional cloud and InterPlanetary File System storage ☁️ 🌐 🗃</li>
+                        <li className="list-group-item bg-primary text-light lead">&bull; Easy to use, step by step instructions with link sharing 😀 📖 📨</li>
+                    </FadeIn>
             </ul>
 
 
-
-            <div className="mt-3 text-center fixed-bottom">
-                <div className="d-grid gap-2" role="group" aria-label="Submit">
-                    <div className="btn-group" role="group">
-                        <button onClick={() => nextOnClick()} disabled={disabled} type="button" className="btn btn-success">Get Started</button>
+                <div className="mt-3 text-center fixed-bottom">
+                    <div className="d-grid gap-2" role="group" aria-label="Submit">
+                        <div className="btn-group" role="group">
+                            <button onClick={() => nextOnClick()} disabled={disabled} type="button" className="btn btn-success">Get Started</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+
 
         </div>
     );
