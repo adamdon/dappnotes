@@ -63,5 +63,12 @@
     "last 1 chrome version",
     "last 1 firefox version",
     "last 1 safari version"
+  ],
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
   ]
 }
