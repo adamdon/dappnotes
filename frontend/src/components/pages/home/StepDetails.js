@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import FadeIn from 'react-fade-in';
 import Hash from "ipfs-only-hash"
 import {useData} from "../../utilities/DataContextProvider";
 
@@ -132,13 +133,13 @@ export default function StepDetails(props)
                         </tr>
 
                         <tr className="table-active">
-                            <td className="text-end text-light px-3">Dimensions <i className="fa fa-expand"></i> :</td>
-                            <td className="text-start text-light px-3">{"placeholder"}</td>
+                            <td className="text-end text-light px-3">Original File Size <i className="fa fa-save"></i> :</td>
+                            <td className="text-start text-light px-3">{data.originalFilesizeKb + "KB"}</td>
                         </tr>
 
                         <tr className="table-active">
-                            <td className="text-end text-light px-3">Predicted CID <i className="fa fa-cloud"></i> :</td>
-                            <td className="text-start text-light px-3">{data.predictedIpfsHash}</td>
+                            <td className="text-end text-light px-3">File Extension <i className="fa fa-expand"></i> :</td>
+                            <td className="text-start text-light px-3">{data.fileExtension}</td>
                         </tr>
 
                     </tbody>

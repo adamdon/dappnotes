@@ -69,6 +69,8 @@ export default function StepImageSelect(props)
             setData({selectedFile: file});
             setData({selectedFileName: file.file.name});
             setData({imageDataUri: file.getFileEncodeDataURL()});
+            setData({fileExtension: file.fileExtension});
+            setData({originalFilesizeKb: (file.file.size / 1024).toFixed(3)});
             setData({filesizeKb: (file.file.size / 1024).toFixed(3)});
             setIsComplete(true);
         }
