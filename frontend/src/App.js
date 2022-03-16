@@ -67,11 +67,6 @@ export default function App()
             if(data.backendUrl !== "null")
             {
                 await fetchConfigData();
-                if(process.env.REACT_ENV === "PRODUCTION")
-                {
-                    ReactGA.initialize(data.config.googleAnalyticsId);
-                    ReactGA.pageview(window.location.pathname);
-                }
             }
         }
         mountUseEffect().then();
@@ -101,6 +96,11 @@ export default function App()
                 {
                     setData({config: jsonData.config});
                     setLoaded(true);
+                    if(process.env.REACT_ENV === "PRODUCTION")
+                    {
+                        ReactGA.initialize(jsonData.config.googleAnalyticsId);
+                        ReactGA.pageview(window.location.pathname);
+                    }
                     // console.log(jsonData.config);
                 }
                 else
