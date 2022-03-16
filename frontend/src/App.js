@@ -6,6 +6,7 @@ import 'react-image-lightbox/style.css';
 import "./styles/colors.css";
 import "./styles/main.css";
 import React, {useEffect, useState} from "react"
+import ReactGA from 'react-ga';
 import {Routes, Route, Link} from "react-router-dom";
 import {useData} from "./components/utilities/DataContextProvider";
 import NavTop from "./components/pages/NavTop";
@@ -66,6 +67,11 @@ export default function App()
             if(data.backendUrl !== "null")
             {
                 await fetchConfigData();
+                if(process.env.REACT_ENV === "PRODUCTION")
+                {
+                    ReactGA.initialize(data.config.googleAnalyticsId);
+                    ReactGA.pageview(window.location.pathname);
+                }
             }
         }
         mountUseEffect().then();
