@@ -17,6 +17,7 @@ import LoadingSpinner from "./components/utilities/LoadingSpinner";
 import AnimatedMount from "./components/utilities/AnimatedMount";
 import ViewPage from "./components/pages/view/ViewPage";
 import AboutPage from "./components/pages/about/AboutPage";
+import NotFoundPage from "./components/pages/notfound/NotFoundPage";
 
 
 
@@ -136,6 +137,7 @@ export default function App()
                 <Route path="/view/:keyId" element={<AnimatedMount show={loaded}> <ViewPage /> </AnimatedMount>} />
                 <Route path="/about" element={<AnimatedMount show={loaded}> <AboutPage /> </AnimatedMount>} />
                 <Route path="/admin" element={<AnimatedMount show={loaded}> <AdminPage /> </AnimatedMount>} />
+                <Route path="*" element={<AnimatedMount show={loaded}> <NotFoundPage /> </AnimatedMount>} />
             </Routes>
             <LoadingSpinner></LoadingSpinner>
         </span>
