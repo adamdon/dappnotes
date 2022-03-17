@@ -6,7 +6,7 @@ import 'react-image-lightbox/style.css';
 import "./styles/colors.css";
 import "./styles/main.css";
 import React, {useEffect, useState} from "react"
-import ReactGA from 'react-ga';
+import GA4React, { useGA4React } from "ga-4-react";
 import {Routes, Route, Link} from "react-router-dom";
 import {useData} from "./components/utilities/DataContextProvider";
 import NavTop from "./components/pages/NavTop";
@@ -98,8 +98,11 @@ export default function App()
                     setLoaded(true);
                     if(process.env.REACT_ENV === "PRODUCTION")
                     {
-                        ReactGA.initialize(jsonData.config.googleAnalyticsId);
-                        ReactGA.pageview(window.location.pathname);
+                        const ga4react = new GA4React(jsonData.config.googleAnalyticsId);
+                        ga4react.initialize().then((ga4) => {
+                            ga4.pageview('path')
+                            ga4.gtag('event','pageview','path')
+                        },(err) => {console.error(err)});
                     }
                     // console.log(jsonData.config);
                 }

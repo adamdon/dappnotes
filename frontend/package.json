@@ -18,7 +18,7 @@
     "react-loader-spinner": "^6.0.0-0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "react-ga": "^3.3.0",
+    "ga-4-react": "^0.1.281",
     "react-fade-in": "^2.0.1",
     "react-mount-animation": "^0.0.9",
     "react-step-wizard": "^5.3.11",
