@@ -100,7 +100,7 @@ export default function App()
                     {
                         const ga4react = new GA4React(jsonData.config.googleAnalyticsId);
                         ga4react.initialize().then((ga4) => {
-                            ga4.pageview('path')
+                            ga4.pageview(window.location.pathname)
                             ga4.gtag('event','pageview','path')
                         },(err) => {console.error(err)});
                     }
