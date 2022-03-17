@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 // import detectEthereumProvider from '@metamask/detect-provider'
+import FadeIn from 'react-fade-in';
 import { ethers } from 'ethers';
 import Web3Modal from "web3modal";
 
@@ -85,70 +86,6 @@ export default function StepWallet(props)
     }
 
 
-    // async function testTransaction()
-    // {
-    //     try
-    //     {
-    //         setData({toastMessage: "Test transaction"});
-    //         // let detectProvider = await detectEthereumProvider()
-    //
-    //
-    //         let providerOptions = {};
-    //         let web3Modal = new Web3Modal({providerOptions});
-    //         let instance = await web3Modal.connect();
-    //
-    //         let provider = new ethers.providers.Web3Provider(instance);
-    //         let accounts = await provider.send("eth_requestAccounts", []);
-    //         let balance = await provider.getBalance(accounts[0]);
-    //         let balanceFormatted = ethers.utils.formatEther(balance);
-    //         let signer = provider.getSigner();
-    //         let addressSigner = await signer.getAddress();
-    //
-    //
-    //
-    //
-    //         const deploymentAddress = data.config.deploymentAddress;
-    //         const contract = new ethers.Contract(deploymentAddress, data.config.contract.abi, signer);
-    //
-    //
-    //
-    //         const connection = contract.connect(signer);
-    //         const addr = connection.address;
-    //         const result = await contract.payToMint(addr, data.ipfsHash, {value: ethers.utils.parseEther('0.05'),});
-    //         await result.wait();
-    //
-    //
-    //         const isContentOwned = await contract.isContentOwned(data.ipfsHash);
-    //
-    //         console.log("isContentOwned");
-    //         console.log(isContentOwned);
-    //         console.log(result);
-    //         console.log("isContentOwned");
-    //     }
-    //     catch (error)
-    //     {
-    //         if(error.data.code && error.data.code === -32603)
-    //         {
-    //             const contractError = error.data.message.split("reverted with reason string ").pop().slice(1,-1);
-    //
-    //             if(contractError === "Note Already Minted")
-    //             {
-    //                 setData({toastError: contractError});
-    //             }
-    //             else
-    //             {
-    //                 console.error(contractError);
-    //                 setData({toastError: error.data.message});
-    //             }
-    //         }
-    //         else
-    //         {
-    //             console.error(error);
-    //             setData({toastError: error.message});
-    //         }
-    //     }
-    // }
-
 
 
 
@@ -194,44 +131,32 @@ export default function StepWallet(props)
 
 
                     <AnimatedMount show={isConnected}>
-                        <div className={''}>
-
-                            {/*<div className="my-3 text-center">*/}
-                            {/*    <div className="d-grid gap-2" role="group" aria-label="Submit">*/}
-                            {/*        <button onClick={testTransaction} disabled={disabled} type="button" className="btn btn-dark">*/}
-                            {/*            <span><i className="fa fa-plug"></i>Test transaction</span>*/}
-                            {/*        </button>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
-
                             <div className="text-center rounded-3 py-3 my-3" style={{backgroundSize: "cover", backgroundImage: `url('${data.imageDataUri}')`}}>
-                                <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
-                                    <thead>
-                                        <tr className="table-active">
-                                            <th className="text-center text-light" colSpan={2}>Wallet Details</th>
-                                        </tr>
-                                    </thead>
+                                <FadeIn transitionDuration={500} delay={250}>
+                                    <table className="table table-sm table-hover bg-primary table-borderless table-fit d-inline-block m-0 pb-1 rounded-3">
+                                        <thead>
+                                            <tr className="table-active">
+                                                <th className="text-center text-light" colSpan={2}>Wallet Details</th>
+                                            </tr>
+                                        </thead>
 
 
-                                    <tbody className="">
+                                        <tbody className="">
+                                            <tr className="table-active">
+                                                <td className="text-end text-light px-3">Address <i className="fa fa-at"></i> :</td>
+                                                <td className="text-start text-light px-3">{address}</td>
+                                            </tr>
 
-                                        <tr className="table-active">
-                                            <td className="text-end text-light px-3">Address <i className="fa fa-at"></i> :</td>
-                                            <td className="text-start text-light px-3">{address}</td>
-                                        </tr>
-
-                                        <tr className="table-active">
-                                            <td className="text-end text-light px-3">Balance <i className="fa fa-university"></i> :</td>
-                                            <td className="text-start text-light px-3">{balance}</td>
-                                        </tr>
-
-                                    </tbody>
+                                            <tr className="table-active">
+                                                <td className="text-end text-light px-3">Balance <i className="fa fa-university"></i> :</td>
+                                                <td className="text-start text-light px-3">{balance}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </FadeIn>
 
 
-                                </table>
                             </div>
-
-                        </div>
                     </AnimatedMount>
 
                 </div>
