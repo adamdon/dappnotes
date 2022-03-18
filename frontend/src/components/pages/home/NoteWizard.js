@@ -56,9 +56,9 @@ export default function NoteWizard(props)
             <StepWrapper stepName={"StepTransaction"}>
                 <StepTransaction/>
             </StepWrapper>
-            <StepWrapper stepName={"StepFinal"}>
-                <StepFinal/>
-            </StepWrapper>
+            {/*<StepWrapper stepName={"StepFinal"}>*/}
+            {/*    <StepFinal/>*/}
+            {/*</StepWrapper>*/}
         </StepWizard>
     );
 }
