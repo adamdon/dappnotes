@@ -42,7 +42,7 @@ export default function HomePage()
                         <FadeIn transitionDuration={500} delay={250}>
                             <div className="alert bg-secondary mb-0">
                                 Learn more about how to use DappNotes and how it all works
-                                <Link to="/view" className="text-white text-decoration-none fw-bold"> here <i className="fa fa-link"></i></Link>
+                                <Link to="/about" className="text-white text-decoration-none fw-bold"> here <i className="fa fa-link"></i></Link>
                             </div>
                         </FadeIn>
                     </ContainerContent>
